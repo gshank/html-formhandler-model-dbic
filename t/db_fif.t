@@ -13,10 +13,10 @@ BEGIN {
 use BookDB::Form::User;
 use BookDB::Form::User2;
 use BookDB::Form::User3;
-use BookDB::Schema::DB;
+use BookDB::Schema;
 use BookDB::Form::BookWithOwner;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->find( 1 );
 
 my $form;

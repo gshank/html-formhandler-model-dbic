@@ -13,9 +13,9 @@ BEGIN {
 
 use_ok( 'HTML::FormHandler::Generator::DBIC' );
 
-use_ok( 'BookDB::Schema::DB');
+use_ok( 'BookDB::Schema');
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
 my $generator = HTML::FormHandler::Generator::DBIC->new( schema => $schema, rs_name => 'User' );

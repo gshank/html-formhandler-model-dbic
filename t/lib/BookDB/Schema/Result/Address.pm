@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Address;
+package BookDB::Schema::Result::Address;
 
 use strict;
 use warnings;
@@ -23,13 +23,13 @@ __PACKAGE__->set_primary_key("address_id");
 
 __PACKAGE__->belongs_to(
     'user',
-    'BookDB::Schema::DB::User',
+    'BookDB::Schema::Result::User',
     { user_id => 'user_id' },
 );
 
 __PACKAGE__->belongs_to(
     'country',
-    'BookDB::Schema::DB::Country',
+    'BookDB::Schema::Result::Country',
     { iso => 'country_iso' },
 );
 

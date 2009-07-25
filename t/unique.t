@@ -9,9 +9,9 @@ BEGIN {
 
 use_ok( 'BookDB::Form::Book');
 
-use BookDB::Schema::DB;
+use BookDB::Schema;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
 my $duplicate_isbn = $schema->resultset('Book')->find(1)->isbn;

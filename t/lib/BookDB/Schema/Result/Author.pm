@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Author;
+package BookDB::Schema::Result::Author;
 
 use strict;
 use warnings;
@@ -20,13 +20,13 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("first_name", "last_name");
 #__PACKAGE__->has_many(
 #  "books",
-#  "BookDB::Schema::DB::Book",
+#  "BookDB::Schema::Result::Book",
 #  { "foreign.author_id" => "self.id" },
 #);
 
 __PACKAGE__->belongs_to(
   'country',
-  'BookDB::Schema::DB::Country',
+  'BookDB::Schema::Result::Country',
   { iso => 'country_iso' },
 );
 

@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::User;
+package BookDB::Schema::Result::User;
 
 use strict;
 use warnings;
@@ -31,28 +31,28 @@ __PACKAGE__->set_primary_key("user_id");
 
 #__PACKAGE__->has_many(
 #  "books",
-#  "BookDB::Schema::DB::Book",
+#  "BookDB::Schema::Result::Book",
 #  { "foreign.author_id" => "self.id" },
 #);
 
 __PACKAGE__->might_have(
    "employer",
-   "BookDB::Schema::DB::Employer",
+   "BookDB::Schema::Result::Employer",
    { 'foreign.user_id' => 'self.user_id' }
 );
 
 __PACKAGE__->has_many(
    "addresses",
-   "BookDB::Schema::DB::Address",
+   "BookDB::Schema::Result::Address",
    { 'foreign.user_id' => 'self.user_id' }
 );
 
 __PACKAGE__->belongs_to(
     'country',
-    'BookDB::Schema::DB::Country',
+    'BookDB::Schema::Result::Country',
     { iso => 'country_iso' },
 );
-__PACKAGE__->belongs_to('license' => 'BookDB::Schema::DB::License', 
+__PACKAGE__->belongs_to('license' => 'BookDB::Schema::Result::License', 
    { 'foreign.license_id' => 'self.license_id' } );
 
 

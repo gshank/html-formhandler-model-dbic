@@ -11,9 +11,9 @@ use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::BookAuto');
 
-use_ok( 'BookDB::Schema::DB');
+use_ok( 'BookDB::Schema');
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
 my $form = BookDB::Form::BookAuto->new(item_id => undef, schema => $schema);

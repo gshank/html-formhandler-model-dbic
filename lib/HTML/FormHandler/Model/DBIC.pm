@@ -22,10 +22,26 @@ Subclass your form from HTML::FormHandler::Model::DBIC:
     use Moose;
     extends 'HTML::FormHandler::Model::DBIC';
 
-There are two ways to get a valid DBIC model: specify the 'item_id' (primary key),
-'item_class' (or source_name), and 'schema', or pass in an 'item'.
+=head1 DESCRIPTION
 
-You can specify the "item_class" in your form:
+This is a separate L<DBIx::Class> model class for L<HTML::FormHandler>. In addition
+it contains an example application (execute with t/script/bookdb_server.pl) and a form
+generator (L<HTML::FormHandler::Generator::DBIC>).
+
+It will handle normal DBIC column accessors and a number of DBIC relationships.
+Single Select fields will handle 'belongs_to' relationships, where the related
+table is used to construct a list of choices. Multiple Select fields use a 
+many_to_many pseudo-relation to create the select list. A Compound field can
+represent a single relation. A Repeatable field will map onto a multiple
+relationship. 
+
+There are two ways to get a valid DBIC model. The first way is to set:
+
+   item_id (primary key)
+   item_class (source name)
+   schema 
+
+The 'item_class' is usually set in the form class: 
 
     # Associate this form with a DBIx::Class result class
     has '+item_class' => ( default => 'User' ); # 'User' is the DBIC source_name
@@ -33,29 +49,36 @@ You can specify the "item_class" in your form:
 The 'item_id' and 'schema' must be passed in when the form is used in your
 controller.
 
-If an 'item' is passed in, the 'item_id', 'item_class', and 'schema' will
-be derived from the 'item'.
+   $form->process( item_id => $id, schema => $c->model('DB')->schema,
+                   params => $c->req->params );
 
-To use FormHandler to create new database records, pass in undef for the item_id,
-and supply an 'item_class' and 'schema', or pass in an empty row (using
-the resultset 'new_result' method).
+If the item_id is not defined, then a new record will be created.
 
-The field names in the field_list of your form should match column, relationship,
-or accessor names in your DBIx::Class result source.
+The second way is to pass in a DBIx::Class row, or 'item';
+
+   $form->process( item => $row, params => $c->req->params );
+
+The 'item_id', 'item_class', and 'schema' will be derived from the 'item'.
+For a new row (such as on a 'create' ), you can use new_result:
+
+   my $item = $c->model('DB::Book')->new_result({});
+   $form->process( item => $item, params => $c->req->params );
+
+The accessor names of the fields in your form should match column, relationship,
+or accessor names in your DBIx::Class result source. Usually the field name
+and accesor are the same, but they may be different.
 
 =head1 DESCRIPTION
 
 This DBIC model for HTML::FormHandler will save form fields automatically to
 the database, will retrieve selection lists from the database
-(with type => 'Select' and a fieldname containing a single relationship,
+(with type => 'Select' and a fieldname containing a belongs_to relationship,
 or type => 'Multiple' and a many_to_many relationship),
 and will save the selected values (one value for 'Select', multiple
 values in a mapping table for a 'Multiple' field).
 
 This model supports using DBIx::Class result_source accessors just as
-if they were standard columns. This allows you to provide alternative
-getters and setters for use in your form.
-
+if they were standard columns. 
 Since the forms that use this model are subclasses of it, you can subclass
 any of the subroutines to provide custom functionality.
 
@@ -75,42 +98,11 @@ Stores the schema that is either passed in, created from
 the model name in the controller, or created from the
 Catalyst context and the item_class in the plugin.
 
-=cut
-
-has 'schema' => (
-   is      => 'rw',
-);
-has 'source_name' => (
-   isa     => 'Str',
-   is      => 'rw',
-   lazy    => 1,
-   builder => 'build_source_name'
-);
-
-# tell Moose to make this class immutable
-HTML::FormHandler::Model::DBIC->meta->make_immutable;
-
 =head2 validate_model
 
 The place to put validation that requires database-specific lookups.
 Subclass this method in your form. Validation of unique fields is
 called from this method.
-
-=cut
-
-sub validate_model
-{
-   my ($self) = @_;
-   return unless $self->validate_unique;
-   return 1;
-}
-
-sub clear_model
-{
-   my $self = shift;
-   $self->item(undef);
-   $self->item_id(undef);
-}
 
 =head2 update_model
 
@@ -127,7 +119,78 @@ If the row doesn't exist (no primary key or row object was passed in), then
 a row is created using "create" and the fields identified as columns passed
 in a hashref, followed by "other" fields and relationships.
 
+=head2 lookup_options
+
+This method is used with "Single" and "Multiple" field select lists
+("single", "filter", and "multi" relationships).
+It returns an array reference of key/value pairs for the column passed in.
+The column name defined in $field->label_column will be used as the label.
+The default label_column is "name".  The labels are sorted by Perl's cmp sort.
+
+If there is an "active" column then only active values are included, except
+if the form (item) has currently selected the inactive item.  This allows
+existing records that reference inactive items to still have those as valid select
+options.  The inactive labels are formatted with brackets to indicate in the select
+list that they are inactive.
+
+The active column name is determined by calling:
+    $active_col = $form->can( 'active_column' )
+        ? $form->active_column
+        : $field->active_column;
+
+This allows setting the name of the active column globally if
+your tables are consistantly named (all lookup tables have the same
+column name to indicate they are active), or on a per-field basis.
+
+The column to use for sorting the list is specified with "sort_column".
+The currently selected values in a Multiple list are grouped at the top
+(by the Multiple field class).
+
+=head2 init_value
+
+This method sets a field's value (for $field->value).
+
+This method is not called if a method "init_value_$field_name" is found
+in the form class - that method is called instead.
+
+=head2 validate_unique
+
+For fields that are marked "unique", checks the database for uniqueness.
+
+=head2 source
+
+Returns a DBIx::Class::ResultSource object for this Result Class.
+
+=head2 resultset
+
+This method returns a resultset from the "item_class" specified
+in the form (C<< $schema->resultset( $form->item_class ) >>)
+
 =cut
+
+has 'schema' => (
+   is      => 'rw',
+);
+has 'source_name' => (
+   isa     => 'Str',
+   is      => 'rw',
+   lazy    => 1,
+   builder => 'build_source_name'
+);
+
+sub validate_model
+{
+   my ($self) = @_;
+   return unless $self->validate_unique;
+   return 1;
+}
+
+sub clear_model
+{
+   my $self = shift;
+   $self->item(undef);
+   $self->item_id(undef);
+}
 
 sub update_model
 {
@@ -148,32 +211,8 @@ sub update_model
     return $new_item;
 }
 
-
-=head2 guess_field_type
-
-This subroutine is only called for "auto" fields, defined like:
-
-    return {
-       auto_required => ['name', 'age', 'sex', 'birthdate'],
-       auto_optional => ['hobbies', 'address', 'city', 'state'],
-    };
-
-Pass in a column and it will guess the field type and return it.
-
-Currently returns:
-    DateTime     - for a has_a relationship that isa DateTime
-    Select       - for a has_a relationship
-    Multiple     - for a has_many
-
-otherwise:
-    DateTimeDMYHM   - if the field ends in _time
-    Text            - otherwise
-
-Subclass this method to do your own field type assignment based
-on column types. This routine returns either an array or type string.
-
-=cut
-
+# undocumented because this is going to be replaced
+# by a better method
 sub guess_field_type
 {
    my ( $self, $column ) = @_;
@@ -213,34 +252,6 @@ sub guess_field_type
    return wantarray ? @return : $return[0];
 }
 
-=head2 lookup_options
-
-This method is used with "Single" and "Multiple" field select lists
-("single", "filter", and "multi" relationships).
-It returns an array reference of key/value pairs for the column passed in.
-The column name defined in $field->label_column will be used as the label.
-The default label_column is "name".  The labels are sorted by Perl's cmp sort.
-
-If there is an "active" column then only active values are included, except
-if the form (item) has currently selected the inactive item.  This allows
-existing records that reference inactive items to still have those as valid select
-options.  The inactive labels are formatted with brackets to indicate in the select
-list that they are inactive.
-
-The active column name is determined by calling:
-    $active_col = $form->can( 'active_column' )
-        ? $form->active_column
-        : $field->active_column;
-
-This allows setting the name of the active column globally if
-your tables are consistantly named (all lookup tables have the same
-column name to indicate they are active), or on a per-field basis.
-
-The column to use for sorting the list is specified with "sort_column".
-The currently selected values in a Multiple list are grouped at the top
-(by the Multiple field class).
-
-=cut
 
 sub lookup_options
 {
@@ -302,15 +313,6 @@ sub lookup_options
    return \@options;
 }
 
-=head2 init_value
-
-This method sets a field's value (for $field->value).
-
-This method is not called if a method "init_value_$field_name" is found
-in the form class - that method is called instead.
-
-=cut
-
 sub init_value
 {
    my ( $self, $field, $value ) = @_;
@@ -347,11 +349,6 @@ sub _get_related_source {
     return;
 }
 
-=head2 validate_unique
-
-For fields that are marked "unique", checks the database for uniqueness.
-
-=cut
 
 # this needs to be rewritten to be called at the field level
 # right now it will only work on fields immediately contained
@@ -399,24 +396,6 @@ sub _id_clause {
     }
     return %result;
 }
-
-
-
-=head2 build_item
-
-This is called first time $form->item is called.
-If using the Catalyst plugin, it sets the DBIx::Class schema from
-the Catalyst context, and the model specified as the first part
-of the item_class in the form. If not using Catalyst, it uses
-the "schema" passed in on "new".
-
-It then does:
-
-    return $self->resultset->find( $self->item_id );
-
-If a database row for the item_id is not found, item_id will be set to undef.
-
-=cut
 
 sub build_item
 {
@@ -466,25 +445,12 @@ sub build_source_name
    return $self->item_class;
 }
 
-=head2 source
-
-Returns a DBIx::Class::ResultSource object for this Result Class.
-
-=cut
 
 sub source
 {
    my ( $self, $f_class ) = @_;
    return $self->schema->source( $self->source_name || $self->item_class );
 }
-
-=head2 resultset
-
-This method returns a resultset from the "item_class" specified
-in the form, or from the foreign class that is retrieved from
-a relationship.
-
-=cut
 
 sub resultset
 {
@@ -521,11 +487,9 @@ sub get_source
 
 See L<HTML::FormHandler>
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Gerda Shank, gshank@cpan.org
-
-Based on the original source code of L<Form::Processor::Model> by Bill Moseley
+Gerda Shank (gshank), gshank@cpan.org
 
 =head1 COPYRIGHT
 

@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Borrower;
+package BookDB::Schema::Result::Borrower;
 
 use strict;
 use warnings;
@@ -24,7 +24,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->has_many(
   "books",
-  "BookDB::Schema::DB::Book",
+  "BookDB::Schema::Result::Book",
   { "foreign.borrower" => "self.id" },
 );
 

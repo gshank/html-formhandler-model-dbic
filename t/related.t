@@ -11,9 +11,9 @@ BEGIN {
 }
 
 use BookDB::Form::User;
-use BookDB::Schema::DB;
+use BookDB::Schema;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 
 my $form = BookDB::Form::User->new( schema => $schema );
 

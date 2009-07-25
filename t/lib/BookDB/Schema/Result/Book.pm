@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Book;
+package BookDB::Schema::Result::Book;
 
 use Moose;
 
@@ -17,9 +17,9 @@ sub set_extra
 }
 
 
-BookDB::Schema::DB::Book->load_components("Core");
-BookDB::Schema::DB::Book->table("book");
-BookDB::Schema::DB::Book->add_columns(
+BookDB::Schema::Result::Book->load_components("Core");
+BookDB::Schema::Result::Book->table("book");
+BookDB::Schema::Result::Book->add_columns(
   "id",
   { data_type => "INTEGER", is_nullable => 0, size => undef },
   "isbn",
@@ -60,28 +60,28 @@ BookDB::Schema::DB::Book->add_columns(
   "extra",
   { data_type => "varchar", is_nullable => 0, size => 100 },
 );
-BookDB::Schema::DB::Book->set_primary_key("id");
-BookDB::Schema::DB::Book->belongs_to(
+BookDB::Schema::Result::Book->set_primary_key("id");
+BookDB::Schema::Result::Book->belongs_to(
   "format",
-  "BookDB::Schema::DB::Format",
+  "BookDB::Schema::Result::Format",
   { id => "format" },
 );
-BookDB::Schema::DB::Book->belongs_to(
+BookDB::Schema::Result::Book->belongs_to(
   "borrower",
-  "BookDB::Schema::DB::Borrower",
+  "BookDB::Schema::Result::Borrower",
   { id => "borrower" },
 );
-BookDB::Schema::DB::Book->belongs_to(
+BookDB::Schema::Result::Book->belongs_to(
   "owner",
-  "BookDB::Schema::DB::User",
+  "BookDB::Schema::Result::User",
   { user_id => "owner" },
 );
-BookDB::Schema::DB::Book->has_many(
+BookDB::Schema::Result::Book->has_many(
   "books_genres",
-  "BookDB::Schema::DB::BooksGenres",
+  "BookDB::Schema::Result::BooksGenres",
   { "foreign.book_id" => "self.id" },
 );
-BookDB::Schema::DB::Book->many_to_many(
+BookDB::Schema::Result::Book->many_to_many(
   genres => 'books_genres', 'genre'
 );
 

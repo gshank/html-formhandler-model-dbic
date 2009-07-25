@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Country;
+package BookDB::Schema::Result::Country;
 
 # Created by DBIx::Class::Schema::Loader v0.03012 @ 2008-01-15 16:54:19
 

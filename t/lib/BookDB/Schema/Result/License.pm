@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::License;
+package BookDB::Schema::Result::License;
 
 
 use strict;
@@ -15,7 +15,7 @@ __PACKAGE__->add_columns(
 );
 
 __PACKAGE__->set_primary_key("license_id");
-__PACKAGE__->has_many( 'user', 'BookDB::Schema::DB::User',
+__PACKAGE__->has_many( 'user', 'BookDB::Schema::Result::User',
    { 'foreign.license_id' => 'self.license_id'},
    { cascade_delete => 0 } );
 

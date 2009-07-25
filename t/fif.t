@@ -13,9 +13,9 @@ use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::Book');
 
-use_ok( 'BookDB::Schema::DB');
+use_ok( 'BookDB::Schema');
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
 my $book = $schema->resultset('Book')->create(

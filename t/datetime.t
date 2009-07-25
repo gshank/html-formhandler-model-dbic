@@ -11,7 +11,7 @@ BEGIN {
    plan tests => 3;
 }
 
-use BookDB::Schema::DB;
+use BookDB::Schema;
 use_ok('HTML::FormHandler::Field::DateTime');
 my $field = HTML::FormHandler::Field::DateTime->new( name => 'test_field' );
 ok( defined $field, 'new() called' );
@@ -28,7 +28,7 @@ has_field 'birthdate'      => ( type => 'DateTime' );
 has_field 'birthdate.year' => ( type => 'Year' );
 }
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->first;
 my $form = UserForm->new( item => $user );
 ok( $form, 'Form with DateTime field loaded from the db' );

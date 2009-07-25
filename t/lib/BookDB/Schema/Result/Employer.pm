@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Employer;
+package BookDB::Schema::Result::Employer;
 
 use strict;
 use warnings;
@@ -22,7 +22,7 @@ __PACKAGE__->set_primary_key("employer_id");
 
 __PACKAGE__->belongs_to(
     'user',
-    'BookDB::Schema::DB::User',
+    'BookDB::Schema::Result::User',
     { user_id => 'user_id' },
 );
 

@@ -9,9 +9,9 @@ BEGIN {
 
 use_ok('HTML::FormHandler::Model::DBIC');
 
-use BookDB::Schema::DB;
+use BookDB::Schema;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db'); 
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db'); 
 
 {
    package My::Form;

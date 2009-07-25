@@ -7,10 +7,10 @@ BEGIN {
    plan tests => 5;
 }
 
-use BookDB::Schema::DB;
+use BookDB::Schema;
 use BookDB::Form::Book;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
 my $form = BookDB::Form::Book->new(schema => $schema);

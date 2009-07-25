@@ -1,4 +1,4 @@
-package BookDB::Schema::DB::Format;
+package BookDB::Schema::Result::Format;
 
 use strict;
 use warnings;
@@ -16,7 +16,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->has_many(
   "books",
-  "BookDB::Schema::DB::Book",
+  "BookDB::Schema::Result::Book",
   { "foreign.format" => "self.id" },
 );
 

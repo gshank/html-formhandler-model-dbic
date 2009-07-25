@@ -10,9 +10,9 @@ BEGIN {
    plan tests => 13;
 }
 
-use BookDB::Schema::DB;
+use BookDB::Schema;
 
-my $schema = BookDB::Schema::DB->connect('dbi:SQLite:t/db/book.db');
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->find(1);
 
 {
