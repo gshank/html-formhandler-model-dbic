@@ -66,7 +66,7 @@ For a new row (such as on a 'create' ), you can use new_result:
 
 The accessor names of the fields in your form should match column, relationship,
 or accessor names in your DBIx::Class result source. Usually the field name
-and accesor are the same, but they may be different.
+and accessor are the same, but they may be different.
 
 =head1 DESCRIPTION
 
@@ -116,8 +116,7 @@ relationship, select, multiple, or other. Column and other fields are
 processed and update is called on the row. Then relationships are processed.
 
 If the row doesn't exist (no primary key or row object was passed in), then
-a row is created using "create" and the fields identified as columns passed
-in a hashref, followed by "other" fields and relationships.
+a row is created.
 
 =head2 lookup_options
 
