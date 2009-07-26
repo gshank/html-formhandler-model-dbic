@@ -17,7 +17,7 @@ my $bad = {
     'title' => "Another Silly Test Book",
     'author' => "C. Foolish",
     'year' => '1590',
-    'pages' => 'too few',
+    'pages' => '101',
 };
 
 my $book = $schema->resultset('Book')->create( $bad );
@@ -28,7 +28,6 @@ my $form = BookDB::Form::Book->new( item => $book );
 ok( !$form->db_validate, 'Bad db data doesn\'t validate' );
 
 $bad->{year} = 1999;
-$bad->{pages} = 101;
 my $validated = $form->process( $bad );
 ok( $validated, 'now form validates' );
 

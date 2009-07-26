@@ -48,6 +48,7 @@ is( $author_field->value, 'Pick a Better Author', 'get init value from form' );
 
 is( $form->field('user_updated')->value, 1, 'writeonly value not from init_obj' );
 is( $form->field('publisher')->fif, 'something', 'noupdate fif from init_obj' );
+$form->processed(0); # to unset processed flag caused by fif
 
 my $params = {
     'title' => 'We Love to Test Perl Form Processors',

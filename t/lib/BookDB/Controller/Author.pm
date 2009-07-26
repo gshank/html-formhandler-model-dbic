@@ -7,7 +7,7 @@ BEGIN {
 
 use BookDB::Form::User;
 
-has 'form' => ( isa => 'BookDB::Form::Author', is => 'rw',
+has 'author_form' => ( isa => 'BookDB::Form::Author', is => 'rw',
    lazy => 1, default => sub { BookDB::Form::Author->new } );
 
 =head1 NAME
@@ -74,7 +74,7 @@ sub form
 {
    my ( $self, $c ) = @_;
 
-   $c->stash( form => $self->form, template => 'author/form.tt',
+   $c->stash( form => $self->author_form, template => 'author/form.tt',
       action => $c->chained_uri_for->as_string );
    return unless $self->form->validate( $c->stash->{author}, 
       params => $c->req->parameters );

@@ -60,6 +60,7 @@ is( $form->field('pages')->fif, 702, 'get field fif value' );
 is( $form->get_param('pages'), '501', 'params contains new value' );
 
 is( $form->field('author')->fif, 'S.Else', 'get another field fif value' );
+$form->processed(0);
 
 my $validated = $form->process;
 
