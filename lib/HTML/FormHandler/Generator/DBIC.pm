@@ -12,7 +12,8 @@ HTML::FormHandler::Generator::DBIC - generate form classes from DBIC schema
 
 =head1 SYNOPSIS
 
-   form_generator.pl --rs_name=Book --schema_name=BookDB::Schema::DB --db_dsn=dbi:SQLite:t/db/book.db > BookForm.pm
+   form_generator.pl --rs_name=Book --schema_name=BookDB::Schema::DB 
+            --db_dsn=dbi:SQLite:t/db/book.db > BookForm.pm
 
 =head1 DESCRIPTION
 
@@ -28,10 +29,6 @@ of the generated classes will be changed from time to time.  This should
 not impact the main usage for this module that we had in mind, that is
 generating the initial version of a FormHandler form class, copying
 it to the project and modifying it.
-
-Here is another usage example:
-
-   script/form_generator.pl --rs_name=Book --schema_name=BookDB::Schema::DB --db_dsn=dbi:SQLite:t/db/book.db > BookForm.pm
 
 This script is installed into the system with the rest of FormHandler.
 
@@ -140,9 +137,9 @@ my $form_template = <<'END';
     has '+item_class' => ( default => '[% rs_name %]' );
 
     [% FOR field = config.fields -%]
-    [% field %]
-    [% END %]
-    has_field submit => ( widget => 'submit' )
+[% field %]
+    [% END -%]
+has_field 'submit' => ( widget => 'submit' )
 }
 [% FOR field_class = self.list_field_classes %]
 [% SET cf = self.get_field_class_data( field_class ) %]
@@ -230,7 +227,7 @@ sub field_def {
             ],
         );
 END
-        $output .= "        has_field '$name.$_';\n" for qw( year month day );
+        $output .= "        has_field '$name.$_';" for qw( year month day );
         return $output;
     }
     my $type = $types{ $info->{data_type} } || 'Text';
@@ -255,7 +252,7 @@ sub get_elements {
         my $rel_class = _strip_class( $info->{class} );
         my $elem_conf;
         if ( ! ( $info->{attrs}{accessor} eq 'multi' ) ) {
-            push @fields, "has_field '$rel' => ( type => 'Select', );\n"
+            push @fields, "has_field '$rel' => ( type => 'Select', );"
         }
         elsif( $level < 1 ) {
             my @new_exclude = get_foreign_cols ( $info->{cond} );
@@ -269,7 +266,7 @@ sub get_elements {
             if( defined $self->style && $self->style eq 'single' ){
                 $field_def .= '# ';
             }
-            $field_def .= "has_field '$rel' => ( type => '+${target_class}Field', );\n";
+            $field_def .= "has_field '$rel' => ( type => '+${target_class}Field', );";
             push @fields, $field_def;
         }
     }
@@ -284,7 +281,7 @@ sub get_elements {
             )
         ){
             # for PK in the root use item_id, here only PKs for related rows
-            unshift @fields, "has_field '$col' => ( type => 'Hidden' );\n" if $level > 1;
+            unshift @fields, "has_field '$col' => ( type => 'Hidden' );" if $level > 1;
         }
         else{
             next if grep { $_ eq $col } @exclude;
@@ -292,7 +289,7 @@ sub get_elements {
        }
     }
     for my $many( $self->m2m_for_class($class) ){
-        unshift @fields, "has_field '$many->[0]' => ( type => 'Select', multiple => 1 );\n"
+        unshift @fields, "has_field '$many->[0]' => ( type => 'Select', multiple => 1 );"
     }
     return { fields => \@fields };
 }
