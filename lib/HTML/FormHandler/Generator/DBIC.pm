@@ -71,6 +71,7 @@ sub _build_schema {
     my $self = shift;
     my $schema_name = $self->schema_name;
     eval "require $schema_name";
+    die $@ if $@;
     return $schema_name->connect( $self->db_dsn, $self->db_user, $self->db_password, );
 }
 
