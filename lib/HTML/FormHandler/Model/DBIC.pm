@@ -7,7 +7,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
 use Scalar::Util qw(blessed);
 
-our $VERSION = '0.04001';
+our $VERSION = '0.04002';
 
 =head1 NAME
 
