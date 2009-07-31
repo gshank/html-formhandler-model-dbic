@@ -1,7 +1,7 @@
 package BookDB::Controller::Book;
 
+use Moose;
 BEGIN {
-   use Moose;
    extends 'Catalyst::Controller';
 }
 
