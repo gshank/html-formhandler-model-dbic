@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Warn;
 use lib 't/lib';
 
 BEGIN {

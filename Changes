@@ -1,3 +1,7 @@
-0.04 Wed July 14, 2009
+0.04002 Tues July 28, 2009
+    Add missing test database (!!!)
+0.04001 Mon July, 27 2009
+    Fix dependency errors
+0.04 Sun July 26, 2009
     Split from HTML::FormHandler distribution
 
