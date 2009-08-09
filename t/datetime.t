@@ -5,12 +5,6 @@ use Test::More;
 use lib './t';
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 3;
-}
-
 use BookDB::Schema;
 use_ok('HTML::FormHandler::Field::DateTime');
 my $field = HTML::FormHandler::Field::DateTime->new( name => 'test_field' );
@@ -32,3 +26,5 @@ my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->first;
 my $form = UserForm->new( item => $user );
 ok( $form, 'Form with DateTime field loaded from the db' );
+
+done_testing;

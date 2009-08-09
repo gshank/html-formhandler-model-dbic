@@ -7,9 +7,6 @@ use lib 't/lib';
 BEGIN {
    plan skip_all => 'Set HFH_DUMP_TEST to run this test'
       unless $ENV{HFH_DUMP_TEST};
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 7;
 }
 
 use_ok( 'HTML::FormHandler' );
@@ -42,3 +39,4 @@ END {
 
 ok( $form->item, 'get new book object' );
 
+done_testing;

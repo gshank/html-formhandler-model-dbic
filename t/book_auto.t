@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 13;
-}
-
 use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::BookAuto');
@@ -62,3 +56,4 @@ ok( !$form->field('pages')->has_errors, 'pages has no error' );
 
 ok( !$form->field('author')->has_errors, 'author has no error' );
 
+done_testing;

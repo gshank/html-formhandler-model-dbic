@@ -4,11 +4,8 @@ use Test::More;
 use lib 't/lib';
 
 BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
    eval "use Template";
    plan skip_all => 'Template' if $@;
-   plan tests => 7;
 }
 
 use_ok( 'HTML::FormHandler::Generator::DBIC' );
@@ -29,3 +26,4 @@ eval $form_code;
 ok( !$@, 'Form code compiles' ) or warn $@;
 ok( UserForm->new, 'Form creation works' );
 
+done_testing;

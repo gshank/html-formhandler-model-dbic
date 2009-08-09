@@ -4,12 +4,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 7;
-}
-
 use BookDB::Form::User;
 use BookDB::Schema;
 
@@ -49,4 +43,4 @@ $params->{license} = 0;
 $params->{$_} = '' for qw/ country fav_book fav_cat /;
 is_deeply( $form->fif, $params, 'fif is correct' );
 
-
+done_testing;

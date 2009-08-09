@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN { 
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 6;
-}
-
 use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
@@ -43,3 +37,4 @@ ok( $title_field->order == 1, 'order for title');
 
 ok( $author_field->order == 2, 'order for author'); 
 
+done_testing;

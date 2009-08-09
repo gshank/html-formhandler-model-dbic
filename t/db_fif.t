@@ -4,12 +4,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 10;
-}
-
 use BookDB::Form::User;
 use BookDB::Form::User2;
 use BookDB::Form::User3;
@@ -72,3 +66,4 @@ is( $form->field( 'birthdate' )->field( 'day' )->fif, 5, 'Day deflated' );
 $form = BookDB::Form::User3->new( item => $user );
 is( $form->field( 'birthdate' )->fif, '1970-04-23', 'DateTime deflated to text' );
 
+done_testing;

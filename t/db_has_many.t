@@ -4,12 +4,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 13;
-}
-
 use BookDB::Schema;
 
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
@@ -122,3 +116,19 @@ is_deeply( $form->fif, $params, 'fif is correct' );
 $form->process($fif);
 is( $form->item->search_related( 'addresses', {city => 'Middle City'} )->first->country->printable_name, 'Graustark', 'updated addresses');
 
+$params->{'addresses.3.street'} = "1101 Maple Street";
+$params->{'addresses.3.city'} = "Smallville";
+$params->{'addresses.3.country'} = "AT";
+$params->{'addresses.3.address_id'} = undef;
+
+TODO: {
+   local $TODO = 'Need to load primary key of new repeatable rows after update_model';
+   $form->process($params);
+   my $new_address = $form->item->search_related('addresses', { address_id => {'>', 3} })->single; 
+   END { $form->item->find_related('addresses', $new_address->id )->delete };
+   ok( $form->validated, 'validated with new address');
+   is( $form->field('addresses.3.address_id')->value, $new_address->id, 'id for new row is correct');
+}
+$form->process($values);
+
+done_testing;

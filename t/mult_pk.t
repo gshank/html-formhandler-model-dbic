@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 14;
-}
-
 use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::Author');
@@ -42,3 +36,5 @@ ok( $author, 'get author from db with hashref');
 $form = BookDB::Form::Author->new(item_id => $pk_hashlist, schema => $schema);
 ok( $form, 'get form with array of hashref primary key' );
 is( $form->item->country_iso, 'GB', 'got right row');
+
+done_testing;

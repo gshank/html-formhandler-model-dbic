@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 19;
-}
-
 use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
@@ -97,3 +91,5 @@ ok( $form3->item->id, 'get id from new result');
 ok( $form3->item_id, 'item_id has been set');
 $form3->process( params => $params );
 ok( $form3->validated, 'form processed a second time');
+
+done_testing;

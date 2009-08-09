@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 5;
-}
-
 use BookDB::Schema;
 use BookDB::Form::Book;
 
@@ -34,4 +28,4 @@ ok ($book, 'get book object from form');
 
 is( $book->extra, 'This is a comment', 'get  data set by accessor');
 
-
+done_testing;

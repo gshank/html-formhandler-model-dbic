@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 7;
-}
-
 use_ok( 'BookDB::Form::Book');
 
 use BookDB::Schema;
@@ -65,4 +59,4 @@ ok( ! $form2->process( $params ), 'duplicate isbn again' );
 
 is( $errors[0], 'Duplicate ISBN number', 'field error message for duplicate');
 
-
+done_testing;

@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 9;
-}
-
 use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
@@ -74,3 +68,5 @@ $book->discard_changes;
 is( $book->title, 'How to Test, Volume 2', 'get new title');
 
 is( $book->id, $id, 'id is correct' );
+
+done_testing;

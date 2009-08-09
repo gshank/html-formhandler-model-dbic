@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 6;
-}
-
 use_ok( 'BookDB::Form::Book');
 use_ok( 'BookDB::Schema');
 
@@ -34,3 +28,4 @@ ok( $validated, 'now form validates' );
 $form->update_model;
 is( $book->year, 1999, 'book has been updated with correct data' );
 
+done_testing;

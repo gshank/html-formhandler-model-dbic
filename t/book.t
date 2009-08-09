@@ -3,12 +3,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 28;
-}
-
 use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::Book');
@@ -113,3 +107,4 @@ ok( $validated, 'now form validates' );
 $form->process;
 is( $book->publisher, 'EreWhon Publishing', 'publisher has not changed');
 
+done_testing;

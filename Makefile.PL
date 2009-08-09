@@ -23,7 +23,7 @@ requires 'DBIx::Class';
 requires 'DBIx::Class::ResultSet::RecursiveUpdate' => '0.010';
 
 # things the tests need
-test_requires 'Test::More'      => '0.77';
+test_requires 'Test::More'      => '0.88';
 test_requires 'DateTime::Format::MySQL';
 test_requires 'DateTime::Format::W3CDTF' => 0;
 test_requires 'DateTime::Format::SQLite';

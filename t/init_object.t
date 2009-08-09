@@ -1,12 +1,6 @@
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 18;
-}
-
 use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
@@ -91,3 +85,5 @@ $form->process({});
 ok( !$form->validated, 'form validated' );
 is( $form->field('reqname')->fif, 'Starting Perl', 
                       'get right fif with init_object');
+
+done_testing;

@@ -3,12 +3,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 23;
-}
-
 use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::Book');
@@ -121,3 +115,4 @@ $form->process($params);
 ok($form->validated, 'form validated');
 is_deeply($form->fif, $params, 'fif is correct');
 
+done_testing;

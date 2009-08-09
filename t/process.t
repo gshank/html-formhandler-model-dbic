@@ -3,12 +3,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 25;
-}
-
 use_ok( 'HTML::FormHandler' );
 
 use_ok( 'BookDB::Form::Book');
@@ -138,10 +132,4 @@ $good = {
 $validated = $form->process( params => $good );
 ok( $validated, 'good params did validate' );
 
-
-
-
-
-
-
-
+done_testing;

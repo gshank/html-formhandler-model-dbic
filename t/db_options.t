@@ -4,12 +4,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 
-BEGIN {
-   eval "use DBIx::Class";
-   plan skip_all => 'DBIX::Class required' if $@;
-   plan tests => 13;
-}
-
 use_ok( 'BookDB::Form::User');
 use_ok( 'BookDB::Schema');
 use_ok( 'BookDB::Form::BookWithOwner' );
@@ -53,3 +47,4 @@ ok( $form, 'Book with Owner form created' );
 $options = $form->field( 'owner' )->field(  'country' )->options;
 is( $form->field( 'owner' )->field(  'country' )->value, 'GB', 'Select value loaded in a related record');
 
+done_testing;
