@@ -34,13 +34,18 @@ is( $schema->resultset('Employer')->search({ user_id => $user->id  })->count, 1,
 
 ok( $form->item->employer, 'employer has been created' );
 
-is_deeply( $form->field('employer')->value,
-   { name => "Acme Software",
-     category => "Computers",
-     country => "United Kingdom" }, 'value is correct' );
+my $employer = {
+   name => "Acme Software",
+   category => "Computers",
+   country => "United Kingdom"
+};
+is_deeply( $form->field('employer')->value, $employer, 'value is correct' );
 $params->{opt_in} = 0;
 $params->{license} = 0;
 $params->{$_} = '' for qw/ country fav_book fav_cat /;
 is_deeply( $form->fif, $params, 'fif is correct' );
+
+$form->process( item => $user );
+is_deeply( $form->field('employer')->value, $employer, 'value correct when loaded from db' );
 
 done_testing;
