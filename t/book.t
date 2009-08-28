@@ -35,7 +35,6 @@ ok ($book, 'get book object from form');
 
 is_deeply( $form->values, $good, 'values correct' );
 $good->{$_} = '' for qw/ year comment pages/;
-$good->{submit} = 'Update';
 is_deeply( $form->fif, $good, 'fif correct' );
 
 my $num_genres = $book->genres->count;
@@ -67,8 +66,6 @@ my $value_hash = { %{$good},
                  };
 delete $value_hash->{submit};
 is_deeply( $form->values, $value_hash, 'get right values from form');
-
-$_->clear_input for $form->fields;
 
 my $bad_1 = {
     notitle => 'not req',

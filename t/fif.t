@@ -42,7 +42,6 @@ is_deeply( $fif, {
       format => '',
       genres => '',
       year => '',
-      submit => 'Update',
    }, 'get form fif' );
 
 $fif->{pages} = '501';
@@ -87,7 +86,6 @@ is( $form->field('pages')->fif, 699, 'get field fif after validation' );
 is( $form->field('author')->fif, 'J.Doe', 'get field author after validation' );
 
 $params->{$_} = '' for qw/ comment format genres year /;
-$params->{submit} = 'Update';
 is_deeply( $form->fif, $params, 'get form fif after validation' );
 
 {

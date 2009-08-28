@@ -121,14 +121,13 @@ $params->{'addresses.3.city'} = "Smallville";
 $params->{'addresses.3.country'} = "AT";
 $params->{'addresses.3.address_id'} = undef;
 
-TODO: {
-   local $TODO = 'Need to load primary key of new repeatable rows after update_model';
-   $form->process($params);
-   my $new_address = $form->item->search_related('addresses', { address_id => {'>', 3} })->single; 
-   END { $form->item->find_related('addresses', $new_address->id )->delete };
-   ok( $form->validated, 'validated with new address');
-   is( $form->field('addresses.3.address_id')->value, $new_address->id, 'id for new row is correct');
-}
+$form->process($params);
+my $new_address = $form->item->search_related('addresses', { address_id => {'>', 3} })->single; 
+END { $form->item->find_related('addresses', $new_address->id )->delete };
+ok( $form->validated, 'validated with new address');
+is( $form->field('addresses.3.address_id')->value, $new_address->id, 'id for new row is correct');
+
+# put the row back to original values
 $form->process($values);
 
 done_testing;
