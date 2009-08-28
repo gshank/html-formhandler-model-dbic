@@ -127,7 +127,7 @@ END { $form->item->find_related('addresses', $new_address->id )->delete };
 ok( $form->validated, 'validated with new address');
 is( $form->field('addresses.3.address_id')->value, $new_address->id, 'id for new row is correct');
 
-# put the row back to original values
+# restore row to beginning state
 $form->process($values);
 
 done_testing;
