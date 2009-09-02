@@ -79,10 +79,12 @@ sub form
 {
    my ( $self, $c ) = @_;
 
-   $c->stash( form => $self->edit_form, template => 'book/form.tt',
-      action => $c->uri_for($c->action, $c->req->captures ));
-   return unless $self->edit_form->process( item => $c->stash->{book},
-      params => $c->req->parameters );
+   my $result = $self->edit_form->run( item => $c->stash->{book},
+      params => $c->req->parameters,
+      action => $c->uri_for($c->action, $c->req->captures ),
+   );
+   $c->stash( template => 'book/form.tt', form => $result );
+   return unless $result->validated; 
    $c->res->redirect( $c->uri_for('list') );
 }
 

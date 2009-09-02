@@ -1,20 +1,14 @@
 package BookDB::Form::BookView;
 
-use Moose;
+use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 use DateTime;
 
 
 has '+item_class' => ( default => 'Book' );
 
-sub field_list {
-   return  {
-      required => {
-        borrower   => 'Select',
-	     borrowed   => 'Text',
-      },
-   };
-}	
+has_field 'borrower' => ( type => 'Select' );
+has_field 'borrowed';
 
 
 # List for the "view" part of this form. These are not updated 
