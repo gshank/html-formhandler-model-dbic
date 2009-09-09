@@ -19,7 +19,7 @@ Catalyst Form.
 =cut
 
 has '+item_class' => ( default => 'Book' );
-has '+widget_name_space' => ( default => 'BookDB::Form::Widget' );
+has '+widget_name_space' => ( default => sub { ['BookDB::Form::Widget'] } );
 has '+widget_wrapper' => ( default => 'Para' );
 
 has_field 'title'  => (

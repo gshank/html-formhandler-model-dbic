@@ -24,9 +24,9 @@ my $params = {
 
 ok( !$form->process( $params ), 'duplicate isbn fails validation' );
 
-my @errors = $form->field('isbn')->errors;
+my $error = $form->field('isbn')->errors->[0];
 
-is( $errors[0], 'Duplicate value for ISBN', 'error message for duplicate');
+is( $error, 'Duplicate value for ISBN', 'error message for duplicate');
 
 {
    package My::Form;
@@ -55,7 +55,7 @@ my $form2 = My::Form->new( item_id => undef, schema => $schema );
 
 ok( ! $form2->process( $params ), 'duplicate isbn again' );
 
-@errors = $form2->field('isbn')->errors;
+@errors = $form2->field('isbn')->all_errors;
 
 is( $errors[0], 'Duplicate ISBN number', 'field error message for duplicate');
 
