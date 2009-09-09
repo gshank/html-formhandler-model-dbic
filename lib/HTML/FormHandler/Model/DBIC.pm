@@ -359,7 +359,7 @@ sub validate_unique
    my $rs          = $self->resultset;
    my $found_error = 0;
 
-   for my $field ( $self->fields )
+   for my $field ( @{$self->fields} )
    {
       next unless $field->unique;
       next if $field->has_errors;
