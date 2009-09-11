@@ -26,7 +26,7 @@ __PACKAGE__->many_to_many(
 __PACKAGE__->has_many(
     'user_employer',
     'BookDB::Schema::Result::UserEmployer',
-    { employer_id => 'employer_id' },
+    { 'foreign.employer_id' => 'self.employer_id' },
 );
 
 1;

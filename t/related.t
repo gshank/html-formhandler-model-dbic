@@ -14,7 +14,7 @@ my $form = BookDB::Form::User->new;
 
 $form->process( item_id => 1, schema => $schema );
 
-ok( $form->field('employers.0.name'), 'field exists');
+ok( $form->field('employers.0.name'), 'many_to_many field exists');
 
 # addresses is a has_many relationship
 # employers is a many_to_many relationship
@@ -35,12 +35,15 @@ my $fif = {
     'birthdate.month' => 4,
     'birthdate.year' => 1970,
     'country' => 'US',
+    'employers.0.employer_id' => 1,
     'employers.0.category' => 'Perl',
     'employers.0.country' => 'US',
     'employers.0.name' => 'Best Perl',
+    'employers.1.employer_id' => 2,
     'employers.1.category' => 'Programming',
     'employers.1.country' => 'UK',
     'employers.1.name' => 'Worst Perl',
+    'employers.2.employer_id' => 3,
     'employers.2.category' => 'Programming',
     'employers.2.country' => 'DE',
     'employers.2.name' => 'Convoluted PHP',
@@ -53,6 +56,16 @@ my $fif = {
 };
 
 is_deeply( $form->fif, $fif, 'fif ok' );;
+my $old_emp = $schema->resultset('Employer')->search({name => 'Convoluted PHP'})->single;
+
+$fif->{'employers.2.category'} = 'Maybe Programming';
+$form->process($fif);
+$old_emp->discard_changes;
+is( $old_emp->category, 'Maybe Programming', 'field has been updated' );
+$fif->{'employers.2.category'} = "Programming";
+$form->process($fif);
+$old_emp->discard_changes;
+is( $old_emp->category, 'Programming', 'field updated again' );
 
 my $params = {
    user_name => "Joe Smith",
@@ -65,13 +78,19 @@ my $params = {
    'employers.0.country' => "United Kingdom"
 };
 $form->process( item_id => undef, params => $params);
-ok( $form->validated, 'related form validated');
+my $new_user = $form->item;
+my $new_employer = $schema->resultset('Employer')->find(5);
+END { 
+   $new_user->delete; 
+   $new_employer->delete;
+}
+ok( $form->validated, 'new related row validated');
 $fif = {
-'addresses' => [],
 'birthdate.day' => 21,
 'birthdate.month' => 4,
 'birthdate.year' => 1974,
 'country' => '',
+'employers.0.employer_id' => 5,
 'employers.0.category' => 'Computers',
 'employers.0.country' => 'United Kingdom',
 'employers.0.name' => 'Acme Software',
@@ -84,10 +103,12 @@ $fif = {
 };
 is_deeply( $form->fif, $fif, 'fif for new item');
 is( $form->item->id, 6, 'new user' );
-my $new_employer = $schema->resultset('Employer')->find(5);
+$new_employer = $schema->resultset('Employer')->find(5);
 ok( $new_employer, 'new employer');
 
-$form->process($params);
+my $new_fif = $form->fif;
+delete $new_fif->{license}; # removeinit_value 
+$form->process($new_fif);
 ok( $form->validated, 'second pass validated');
 
 $user = $form->item;
@@ -96,6 +117,7 @@ is( $schema->resultset('UserEmployer')->search({ user_id => $user->id  })->count
     'the right number of employers' );
 
 my $employers = [{
+   employer_id => 5,
    name => "Acme Software",
    category => "Computers",
    country => "United Kingdom"
@@ -104,10 +126,8 @@ is_deeply( $form->field('employers')->value, $employers, 'value is correct' );
 $params->{opt_in} = 0;
 $params->{license} = 0;
 $params->{$_} = '' for qw/ country fav_book fav_cat /;
-TODO: {
-   local $TODO = 'fix fif to not create empty array for repeatable';
-   is_deeply( $form->fif, $params, 'fif is correct' );
-}
+$params->{'employers.0.employer_id'} = 5;
+is_deeply( $form->fif, $params, 'fif is correct' );
 
 $form->process( item => $user );
 is_deeply( $form->field('employers')->value, $employers, 'value correct when loaded from db' );

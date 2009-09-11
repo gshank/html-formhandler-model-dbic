@@ -23,6 +23,7 @@ has_field 'birthdate.month' => ( type => 'Text', );
 has_field 'birthdate.day' => ( type => 'Text', );
 
 has_field 'employers' => ( type => 'Repeatable' );
+has_field 'employers.employer_id' => ( type => 'PrimaryKey' );
 has_field 'employers.name';
 has_field 'employers.category';
 has_field 'employers.country';
