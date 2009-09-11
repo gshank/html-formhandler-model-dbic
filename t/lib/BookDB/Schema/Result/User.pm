@@ -35,11 +35,17 @@ __PACKAGE__->set_primary_key("user_id");
 #  { "foreign.author_id" => "self.id" },
 #);
 
-__PACKAGE__->might_have(
-   "employer",
+__PACKAGE__->has_many(
+   "user_employers",
    "BookDB::Schema::Result::Employer",
    { 'foreign.user_id' => 'self.user_id' }
 );
+
+__PACKAGE__->many_to_many(
+   "employers" => "user_employers",
+   "employer",
+);
+
 
 __PACKAGE__->has_many(
    "addresses",

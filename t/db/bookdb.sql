@@ -16,6 +16,7 @@ INSERT INTO "user" VALUES ( 3, 'sam', 'Technical', 'Higher Order Perl', 'program
 INSERT INTO "user" VALUES ( 4, 'jsw', 'Historical', 'History of the World', 'unemployed', 'RU', '1965-03-24 22:22:22', 0, 4 );
 INSERT INTO "user" VALUES ( 5, 'plax', 'Sci-Fi', 'Fungibility', 'editor', 'PL', '1977-10-24 22:22:22', 1, 1 );
 
+
 CREATE table licenses (
    license_id INTEGER,
    name VARCHAR(32),
@@ -27,13 +28,29 @@ INSERT INTO "licenses" VALUES (2, "GPL", "GNU General Public License", 1 );
 INSERT INTO "licenses" VALUES (3, "LGPL", "GNU Lesser Public License", 1 );
 INSERT INTO "licenses" VALUES (4, "Creative Commons", "Creative Commons Attribution license", 1 );
 
+CREATE TABLE user_employer (
+   user_id INTEGER,
+   employer_id INTEGER
+);
+
+INSERT INTO "user_employer" VALUES ( 1, 1 );
+INSERT INTO "user_employer" VALUES ( 1, 2 );
+INSERT INTO "user_employer" VALUES ( 1, 3 );
+INSERT INTO "user_employer" VALUES ( 2, 4 );
+INSERT INTO "user_employer" VALUES ( 4, 3 );
+
 CREATE TABLE employer (
    employer_id INTEGER PRIMARY KEY,
-   user_id INTEGER,
    name VARCHAR(32),
    category VARCHAR(32),
    country VARCHAR(24)
 );
+
+INSERT INTO "employer" VALUES ( 1, "Best Perl", "Perl", "US" );
+INSERT INTO "employer" VALUES ( 2, "Worst Perl", "Programming", "UK" );
+INSERT INTO "employer" VALUES ( 3, "Convoluted PHP", "Programming", "DE" );
+INSERT INTO "employer" VALUES ( 4, "Contractor Heaven", "Losing", "DE" );
+
 
 CREATE TABLE address (
    address_id INTEGER PRIMARY KEY,

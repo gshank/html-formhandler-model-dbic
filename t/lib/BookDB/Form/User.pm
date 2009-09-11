@@ -22,10 +22,10 @@ has_field 'birthdate.year' => ( type => 'Text', );
 has_field 'birthdate.month' => ( type => 'Text', );
 has_field 'birthdate.day' => ( type => 'Text', );
 
-has_field 'employer' => ( type => 'Compound' );
-has_field 'employer.name';
-has_field 'employer.category';
-has_field 'employer.country';
+has_field 'employers' => ( type => 'Repeatable' );
+has_field 'employers.name';
+has_field 'employers.category';
+has_field 'employers.country';
 
 has_field 'addresses' => ( type => 'Repeatable' );
 has_field 'addresses.address_id' => ( type => 'PrimaryKey' );

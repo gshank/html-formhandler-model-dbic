@@ -11,15 +11,22 @@ my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 
 my $form = BookDB::Form::User->new( schema => $schema );
 
+$form->process( item_id => 1, schema => $schema );
+
+ok( $form->field('employers.0.name'), 'field exists');
+
+done_testing;
+exit;
+
 my $params = {
    user_name => "Joe Smith",
    occupation => "Programmer",
    'birthdate.year' => '1974',
    'birthdate.month' => 4,
    'birthdate.day' => 21,
-   'employer.name' => "Acme Software",
-   'employer.category' => "Computers",
-   'employer.country' => "United Kingdom"
+   'employers.0.name' => "Acme Software",
+   'employers.0.category' => "Computers",
+   'employers.0.country' => "United Kingdom"
 };
 $form->process($params);
 END { $form->item->delete }
@@ -29,7 +36,7 @@ ok( $form->validated, 'second pass validated');
 
 my $user = $form->item;
 is( $user->user_name, 'Joe Smith', 'created item');
-is( $schema->resultset('Employer')->search({ user_id => $user->id  })->count, 1,
+is( $schema->resultset('UserEmployer')->search({ user_id => $user->id  })->count, 1,
     'the right number of employers' );
 
 ok( $form->item->employer, 'employer has been created' );
