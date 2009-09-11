@@ -37,7 +37,7 @@ __PACKAGE__->set_primary_key("user_id");
 
 __PACKAGE__->has_many(
    "user_employers",
-   "BookDB::Schema::Result::Employer",
+   "BookDB::Schema::Result::UserEmployer",
    { 'foreign.user_id' => 'self.user_id' }
 );
 
