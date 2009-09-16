@@ -36,7 +36,7 @@ my $title_field = $form->field('title');
 is( $title_field->value, 'Fill in the title', 'get title from init_object');
 
 my $author_field = $form->field('author');
-is( $author_field->value, 'Pick a Better Author', 'get init value from form' );
+is( $author_field->value, 'Enter an Author', 'get init value from init_object' );
 
 is( $form->field('publisher')->fif, 'something', 'noupdate fif from init_obj' );
 $form->processed(0); # to unset processed flag caused by fif
@@ -50,6 +50,7 @@ my $params = {
 ok( $form->process( $params ), 'validate data' );
 ok( $form->field('title')->value_changed, 'init_value ne value');
 is( $form->field('publisher')->value, 'anything', 'value for noupdate field' );
+is( $form->field('author')->value, 'B.B. Better', 'right value for author' );
 my $values = $form->value;
 ok( !exists $values->{publisher}, 'no publisher in values' );
 
