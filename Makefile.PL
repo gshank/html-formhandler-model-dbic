@@ -23,6 +23,7 @@ requires 'Moose' => '0.90';
 requires 'MooseX::AttributeHelpers' => '0.22';
 requires 'DBIx::Class';
 requires 'DBIx::Class::ResultSet::RecursiveUpdate' => '0.012';
+requires 'namespace::autoclean' => '0.09';
 
 # things the tests need
 test_requires 'Test::More'      => '0.88';
