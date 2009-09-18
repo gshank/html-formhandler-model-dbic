@@ -1,6 +1,5 @@
 package HTML::FormHandler::Generator::DBIC;
 use Moose;
-use MooseX::AttributeHelpers;
 
 use DBIx::Class;
 use Template;
@@ -93,35 +92,32 @@ has 'm2m' => (
 );
 
 has 'packages' => (
-   metaclass  => 'Collection::Hash',
+   traits     => ['Hash'],
    isa        => 'HashRef[Str]',
    is         => 'rw',
    default    => sub { {} },
    auto_deref => 1,
-   provides   => {
-       keys      => 'used_packages',
+   handles   => {
+       used_packages => 'keys',
+       _add_package => 'set'
    },
-   curries  => {
-       set => {
-           add_package => sub {
-               my ($self, $body, $package) = @_;
-               $body->($self, $package, 1);
-           }
-       }
-   }
 );
+sub add_package {
+    my ( $self, $package ) = @_;
+    $self->_add_package( $package, 1 );
+}
 
 has 'field_classes' => (
-   metaclass  => 'Collection::Hash',
+   traits     => ['Hash'],
    isa        => 'HashRef[HashRef]',
    is         => 'rw',
    default    => sub { {} },
    auto_deref => 1,
-   provides   => {
-       keys      => 'list_field_classes',
-       get       => 'get_field_class_data',
-       exists    => 'exists_field_class',
-       set       => 'set_field_class_data',
+   handles   => {
+       list_field_classes => 'keys',
+       get_field_class_data => 'get',
+       exists_field_class => 'exists',
+       set_field_class_data => 'set',
    },
 );
 
