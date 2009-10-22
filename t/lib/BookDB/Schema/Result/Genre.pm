@@ -12,6 +12,8 @@ BookDB::Schema::Result::Genre->add_columns(
   { data_type => "INTEGER", is_nullable => 0, size => undef },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
+  "is_active",
+  { data_type => 'INTEGER', is_nullable => 1 },
 );
 BookDB::Schema::Result::Genre->set_primary_key("id");
 BookDB::Schema::Result::Genre->has_many(

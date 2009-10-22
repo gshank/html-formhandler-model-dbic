@@ -124,14 +124,15 @@ INSERT INTO "books_genres" VALUES(6, 3);
 INSERT INTO "books_genres" VALUES(6, 2);
 CREATE TABLE genre (
     id INTEGER PRIMARY KEY,
-    name varchar(100)
+    name varchar(100),
+    is_active INTEGER
 );
-INSERT INTO "genre" VALUES(1, 'Sci-Fi');
-INSERT INTO "genre" VALUES(2, 'Computers');
-INSERT INTO "genre" VALUES(3, 'Mystery');
-INSERT INTO "genre" VALUES(4, 'Historical');
-INSERT INTO "genre" VALUES(5, 'Fantasy');
-INSERT INTO "genre" VALUES(6, 'Technical');
+INSERT INTO "genre" VALUES(1, 'Sci-Fi', NULL);
+INSERT INTO "genre" VALUES(2, 'Computers', NULL);
+INSERT INTO "genre" VALUES(3, 'Mystery', NULL);
+INSERT INTO "genre" VALUES(4, 'Historical', NULL);
+INSERT INTO "genre" VALUES(5, 'Fantasy', NULL);
+INSERT INTO "genre" VALUES(6, 'Technical', NULL);
 CREATE TABLE author (
    first_name VARCHAR(100),
    last_name VARCHAR(100),

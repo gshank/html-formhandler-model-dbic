@@ -104,4 +104,7 @@ ok( $validated, 'now form validates' );
 $form->process;
 is( $book->publisher, 'EreWhon Publishing', 'publisher has not changed');
 
+$form = BookDB::Form::Book->new(schema => $schema, active_column => 'is_active');
+is( scalar @{$form->field( 'genres' )->options}, 0, 'active_column test' );
+
 done_testing;
