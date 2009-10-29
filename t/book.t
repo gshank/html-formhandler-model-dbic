@@ -107,4 +107,22 @@ is( $book->publisher, 'EreWhon Publishing', 'publisher has not changed');
 $form = BookDB::Form::Book->new(schema => $schema, active_column => 'is_active');
 is( scalar @{$form->field( 'genres' )->options}, 0, 'active_column test' );
 
+{
+    package Test::Book;
+    use HTML::FormHandler::Moose;
+    extends 'HTML::FormHandler::Model::DBIC';
+
+    has_field 'title' => ( minlength => 3, maxlength => 40, required => 1 );
+    has_field 'author';
+    has_field 'submit' => ( type => 'Submit' );
+}
+
+# this tests to make sure that result loaded from db object is cleared when
+# the result is then loaded from the params
+$form = Test::Book->new;
+my $new_book = $schema->resultset('Book')->new_result({});
+$form->process( item => $new_book, params => {} );
+$form->process( item => $new_book, params => { title => 'abc' } );
+is( $form->result->num_results, 3, 'right number of results'); 
+
 done_testing;
