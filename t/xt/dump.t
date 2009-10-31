@@ -17,7 +17,7 @@ use_ok( 'BookDB::Schema');
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
-my $form = BookDB::Form::Book->new(verbose => 1);
+my $form = BookDB::Form::Book->new(verbose => 1, schema => $schema);
 
 ok( $form, 'get form object with verbose output' );
 
@@ -30,7 +30,7 @@ my $good = {
     'publisher' => 'EreWhon Publishing',
 };
 
-ok( $form->process( schema => $schema, params => $good ), 'Good data' );
+ok( $form->process( params => $good ), 'Good data' );
 my $book = $form->item;
 END {
   $book->delete;

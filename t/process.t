@@ -12,14 +12,15 @@ use_ok( 'BookDB::Schema');
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
-my $form = BookDB::Form::Book->new;
+my $form = BookDB::Form::Book->new( schema => $schema );
+ok( $form->field( 'genres' )->can( 'init_value_with_fix' ), 'init_value_with_fix injected into many to many select field' );
 
 ok( $form, 'no param new' );
 
-$form->process( item_id => 1, schema => $schema, params => {} );
+$form->process( item_id => 1, params => {} );
 is( $form->item->id, 1, 'get item from item_id and schema');
 
-ok( !$form->process( item_id => undef, schema => $schema ), 'Empty data' );
+ok( !$form->process( item_id => undef ), 'Empty data' );
 
 # This is munging up the equivalent of param data from a form
 my $good = {
@@ -30,8 +31,7 @@ my $good = {
     'isbn'   => '123-02345-0502-2' ,
     'publisher' => 'EreWhon Publishing',
 };
-
-ok( $form->process( schema => $schema, params => $good ), 'Good data' );
+ok( $form->process( params => $good ), 'Good data' );
 
 is( $form->field( 'title' )->input, 'How to Test Perl Form Processors', 'Input created from params and not deleted in validate' );
 
@@ -54,14 +54,14 @@ $good = {
     'isbn'   => '123-02345-0502-2' ,
     'publisher' => 'EreWhon Publishing',
 };
-ok( $form->process( item => $book, schema => $schema, params => $good ),
+ok( $form->process( item => $book, params => $good ),
   'update book with another request' ); 
 
 my $bad_1 = {
     notitle => 'not req',
     silly_field   => 4,
 };
-ok( !$form->process( schema => $schema, params => $bad_1 ), 'bad parameters' );
+ok( !$form->process( params => $bad_1 ), 'bad parameters' );
 
 
 my $bad_2 = {
@@ -72,7 +72,7 @@ my $bad_2 = {
     'format' => '22',
 };
 
-ok( !$form->process( schema => $schema, params => $bad_2 ), 'bad 2');
+ok( !$form->process( params => $bad_2 ), 'bad 2');
 
 ok( $form->field('year')->has_errors, 'year has error' );
 
@@ -84,7 +84,7 @@ ok( $form->field('format')->has_errors, 'format has error' );
 
 
 
-$form->process(item => $book, schema => $schema);
+$form->process(item => $book );
 ok( $form, 'create form from db object');
 
 my $genres_field = $form->field('genres');

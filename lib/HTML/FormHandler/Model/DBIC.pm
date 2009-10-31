@@ -252,102 +252,6 @@ sub guess_field_type
 }
 
 
-sub lookup_options
-{
-   my ( $self, $field, $accessor_path ) = @_;
-
-   return unless $self->schema;
-   my $self_source = $self->get_source( $accessor_path );
-
-   my $accessor = $field->accessor;
-
-   # if this field doesn't refer to a foreign key, return
-   my $f_class;
-   my $source;
-   if ($self_source->has_relationship($accessor) )
-   {
-      $f_class = $self_source->related_class($accessor);
-      $source = $self->schema->source($f_class);
-   }
-   elsif ($self->resultset->new_result({})->can("add_to_$accessor") )
-   {
-      # Multiple field with many_to_many relationship
-      $source = $self_source->resultset->new_result({})->$accessor->result_source;
-   }
-   return unless $source;
-
-   my $label_column = $field->label_column;
-   return unless $source->has_column($label_column);
-
-   my $active_col = $self->active_column || $field->active_column;
-   $active_col = '' unless $source->has_column($active_col);
-   my $sort_col = $field->sort_column;
-   $sort_col = defined $sort_col && $source->has_column($sort_col) ? $sort_col : $label_column;
-
-   my ($primary_key) = $source->primary_columns;
-
-   # If there's an active column, only select active OR items already selected
-   my $criteria = {};
-   if ($active_col)
-   {
-      my @or = ( $active_col => 1 );
-
-      # But also include any existing non-active
-      push @or, ( "$primary_key" => $field->init_value )
-         if $self->item && defined $field->init_value;
-      $criteria->{'-or'} = \@or;
-   }
-
-   # get an array of row objects
-   my @rows =
-      $self->schema->resultset( $source->source_name )
-      ->search( $criteria, { order_by => $sort_col } )->all;
-   my @options;
-   foreach my $row (@rows)
-   {
-      my $label = $row->$label_column;
-      next unless $label;   # this means there's an invalid value
-      push @options, $row->id, $active_col && !$row->$active_col ? "[ $label ]" : "$label";
-   }
-   return \@options;
-}
-
-sub init_value
-{
-   my ( $self, $field, $value ) = @_;
-   if( ref $value eq 'ARRAY' ){
-       $value = [ map { $self->_fix_value( $field, $_ ) } @$value ];
-   }
-   else{
-       $value = $self->_fix_value( $field, $value );
-   }
-   $field->init_value($value);
-   $field->value($value);
-}
-
-sub _fix_value
-{
-   my ( $self, $field, $value ) = @_;
-   if( blessed $value && $value->isa('DBIx::Class') ){
-       return $value->id;
-   }
-   return $value;
-}
-
-sub _get_related_source {
-    my ( $self, $source, $name ) = @_;
-
-    if( $source->has_relationship( $name ) ){
-        return $source->related_source( $name );
-    }
-    # many to many case
-    my $row = $source->resultset->new({});
-    if ( $row->can( $name ) and $row->can( 'add_to_' . $name ) and $row->can( 'set_' . $name ) ){
-        return $row->$name->result_source;
-    }
-    return;
-}
-
 
 # this needs to be rewritten to be called at the field level
 # right now it will only work on fields immediately contained
@@ -458,29 +362,161 @@ sub resultset
    return $self->schema->resultset( $self->source_name || $self->item_class );
 }
 
-sub new_lookup_options
-{
-   my ( $self, $field, $accessor_path ) = @_;
 
-   my $source = $self->get_source( $accessor_path );
-   $self->lookup_options( $field, $source );
+sub model_new_field_hook
+{
+    my( $self, $class, $field_attr ) = @_;
+    my @traits = $field_attr->{traits} ? @{$field_attr->{traits}} : ();
+
+    if( $class->DOES( 'HTML::FormHandler::Field' ) ) {
+        push @traits, 'HTML::FormHandler::Model::DBIC::Field';
+    }   
+    if( $class->DOES( 'HTML::FormHandler::Field::Select' ) ) {
+        push @traits, 'HTML::FormHandler::Model::DBIC::Field::Select';
+    }   
+    elsif( $class->DOES( 'HTML::FormHandler::Field::Compound' ) ) {
+        push @traits, 'HTML::FormHandler::Model::DBIC::Field::Compound';
+    }
+    $field_attr->{traits} = \@traits if @traits;
+    if( 
+        $class->DOES( 'HTML::FormHandler::Field::Select' ) 
+        || $class->DOES( 'HTML::FormHandler::Field::Compound' )
+    ){
+        return unless $self->schema;
+        my $related_source;
+        my $name = $field_attr->{accessor} || $field_attr->{name};
+        if( $self->source->has_relationship( $name ) ){
+            $related_source = $self->source->related_source( $name );
+        }
+        # many to many case
+        my $row = $self->source->resultset->new({});
+        if ( $row->can( $name ) and $row->can( 'add_to_' . $name ) and $row->can( 'set_' . $name ) ){
+            $related_source = $row->$name->result_source;
+        }
+        $field_attr->{resultset} = $related_source->resultset if $related_source;
+    }
 }
 
-sub get_source
 {
-   my ( $self, $accessor_path ) = @_;
-   return unless $self->schema;
-   my $source = $self->source;
-   return $source unless $accessor_path;
-   my @accessors = split /\./, $accessor_path;
-   for my $accessor ( @accessors )
-   {
-       $source = $self->_get_related_source( $source, $accessor );
-       die "unable to get source for $accessor" unless $source;
-   }
-   return $source;
+    package  HTML::FormHandler::Model::DBIC::Field;
+    use Moose::Role;
+
+    sub init_value_with_fix
+    {
+       my ( $self, $value ) = @_;
+       if( ref $value eq 'ARRAY' ){
+           $value = [ map { $self->_fix_value( $_ ) } @$value ];
+       }
+       else{
+           $value = $self->_fix_value( $value );
+       }
+       $self->init_value($value);
+       $self->value($value);
+    }
+
+    sub _fix_value
+    {
+       my ( $self, $value ) = @_;
+       if( blessed $value && $value->isa('DBIx::Class') ){
+           return $value->id;
+       }
+       return $value;
+    }
 }
 
+
+{
+    package  HTML::FormHandler::Model::DBIC::Field::Select;
+    use Moose::Role;
+    
+    has resultset => ( isa => 'DBIx::Class::ResultSet', is => 'rw' );
+
+    sub lookup_options
+    {
+       my ( $self, ) = @_;
+
+       return unless $self->resultset;
+       my $source;
+       $source = $self->resultset->result_source;
+
+       my $label_column = $self->label_column;
+       return unless $source->has_column($label_column);
+
+       my $active_col = $self->form->active_column || $self->active_column;
+       $active_col = '' unless $source->has_column($active_col);
+       my $sort_col = $self->sort_column;
+       $sort_col = defined $sort_col && $source->has_column($sort_col) ? $sort_col : $label_column;
+
+       my ($primary_key) = $source->primary_columns;
+
+       # If there's an active column, only select active OR items already selected
+       my $criteria = {};
+       if ($active_col)
+       {
+          my @or = ( $active_col => 1 );
+
+          # But also include any existing non-active
+          push @or, ( "$primary_key" => $self->init_value )
+             if $self->form->item && defined $self->init_value;
+          $criteria->{'-or'} = \@or;
+       }
+
+       # get an array of row objects
+       my @rows =
+          $self->resultset->search( $criteria, { order_by => $sort_col } )->all;
+       my @options;
+       foreach my $row (@rows)
+       {
+          my $label = $row->$label_column;
+          next unless $label;   # this means there's an invalid value
+          push @options, $row->id, $active_col && !$row->$active_col ? "[ $label ]" : "$label";
+       }
+       return \@options;
+    }
+
+}
+
+{
+    package  HTML::FormHandler::Model::DBIC::Field::Compound;
+    use Moose::Role;
+
+    has resultset => ( isa => 'DBIx::Class::ResultSet', is => 'rw' );
+
+    sub model_new_field_hook
+    {
+        my( $self, $class, $field_attr ) = @_;
+        return unless $self->resultset;
+        my @traits = $field_attr->{traits} ? @{$field_attr->{traits}} : ();
+
+        if( $class->DOES( 'HTML::FormHandler::Field' ) ) {
+            push @traits, 'HTML::FormHandler::Model::DBIC::Field';
+        }   
+        if( $class->DOES( 'HTML::FormHandler::Field::Select' ) ) {
+            push @traits, 'HTML::FormHandler::Model::DBIC::Field::Select';
+        }   
+        elsif( $class->DOES( 'HTML::FormHandler::Field::Compound' ) ) {
+            push @traits, 'HTML::FormHandler::Model::DBIC::Field::Compound';
+        }
+        $field_attr->{traits} = \@traits if @traits;
+        if( 
+            $class->DOES( 'HTML::FormHandler::Field::Select' ) 
+            || $class->DOES( 'HTML::FormHandler::Field::Compound' )
+        ){
+            my $source = $self->resultset->result_source;
+            my $related_source;
+            my $name = $field_attr->{accessor} || $field_attr->{name};
+            if( $source->has_relationship( $name ) ){
+                $related_source = $source->related_source( $name );
+            }
+            # many to many case
+            my $row = $source->resultset->new({});
+            if ( $row->can( $name ) and $row->can( 'add_to_' . $name ) and $row->can( 'set_' . $name ) ){
+                $related_source = $row->$name->result_source;
+            }
+            $field_attr->{resultset} = $related_source->resultset if $related_source;
+        }
+    }
+}
 
 =head1 SUPPORT
 

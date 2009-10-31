@@ -10,9 +10,9 @@ use BookDB::Schema;
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->find(1);
 
-my $form = BookDB::Form::User->new;
+my $form = BookDB::Form::User->new( schema => $schema );
 
-$form->process( item_id => 1, schema => $schema );
+$form->process( item_id => 1 );
 
 ok( $form->field('employers.0.name'), 'many_to_many field exists');
 

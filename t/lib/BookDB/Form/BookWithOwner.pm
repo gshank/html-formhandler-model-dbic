@@ -12,6 +12,7 @@
     has_field 'fav_book' => ( label => 'Favorite Book' );
     has_field 'occupation';
     has_field 'country' => ( type => 'Select' );
+    has_field 'employers' => ( type => 'Select' );
     
     sub validate_occupation
     {

@@ -51,9 +51,9 @@ $form4->item->delete;
 sub page_request {
     my $params = shift;
  
-    my $form = BookDB::Form::Book->new;
+    my $form = BookDB::Form::Book->new( schema => $schema );
     ok( $form, 'no param new' );
-    $form->process( item_id => undef, schema => $schema, params => $params );
+    $form->process( item_id => undef, params => $params );
     my $options = $form->field( 'format' )->options;
     is( @$options, 6, 'Format options loaded from the model' );
     return $form;

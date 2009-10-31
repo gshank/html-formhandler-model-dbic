@@ -17,6 +17,11 @@ my $form;
 my $options;
 
 $form = BookDB::Form::User->new( item => $user );
+is( $form->field( 'addresses' )->resultset->result_class, 'BookDB::Schema::Result::Address', 'ResultSet for a has_many'  );
+is( $form->field( 'employers' )->resultset->result_class, 'BookDB::Schema::Result::Employer', 'ResultSet for a many_to_many' );
+is( $form->field( 'country' )->resultset->result_class, 'BookDB::Schema::Result::Country', 'ResultSet for a belongs_to' );
+is( $form->field( 'license' )->resultset->result_class, 'BookDB::Schema::Result::License', 'ResultSet for a belongs_to' );
+
 ok( $form, 'User form created' );
 $options = $form->field( 'country' )->options;
 is( @$options, 16, 'Options loaded from the model' );
@@ -40,6 +45,8 @@ $form = BookDB::Form::BookWithOwner->new( schema => $schema, source_name => 'Boo
 ok( $form, 'Book with Owner form created' );
 $options = $form->field( 'owner' )->field(  'country' )->options;
 is( @$options, 16, 'Options loaded from the model - recursive' );
+$options = $form->field( 'owner' )->field(  'employers' )->options;
+is( @$options, 4, 'Options loaded from the model - many to many - recursive' );
 
 my $book = $schema->resultset('Book')->find(1);
 $form = BookDB::Form::BookWithOwner->new( item => $book );
