@@ -36,7 +36,7 @@ my $title_field = $form->field('title');
 is( $title_field->value, 'Fill in the title', 'get title from init_object');
 
 my $author_field = $form->field('author');
-is( $author_field->value, 'Enter an Author', 'get init value from init_object' );
+is( $author_field->value, 'Pick a Better Author', 'get init value from init_value_author' );
 
 is( $form->field('publisher')->fif, 'something', 'noupdate fif from init_obj' );
 $form->processed(0); # to unset processed flag caused by fif

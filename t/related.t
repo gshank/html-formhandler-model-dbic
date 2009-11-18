@@ -96,7 +96,7 @@ $fif = {
 'employers.0.name' => 'Acme Software',
 'fav_book' => '',
 'fav_cat' => '',
-'license' => '',
+'license' => 0,
 'occupation' => 'Programmer',
 'opt_in' => 0,
 'user_name' => 'Joe Smith',
@@ -124,7 +124,7 @@ my $employers = [{
 }];
 is_deeply( $form->field('employers')->value, $employers, 'value is correct' );
 $params->{opt_in} = 0;
-$params->{license} = '';
+$params->{license} = 0;
 $params->{$_} = '' for qw/ country fav_book fav_cat /;
 $params->{'employers.0.employer_id'} = 5;
 is_deeply( $form->fif, $params, 'fif is correct' );
