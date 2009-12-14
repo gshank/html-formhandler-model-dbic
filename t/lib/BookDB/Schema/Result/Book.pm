@@ -84,5 +84,8 @@ BookDB::Schema::Result::Book->has_many(
 BookDB::Schema::Result::Book->many_to_many(
   genres => 'books_genres', 'genre'
 );
+BookDB::Schema::Result::Book->add_unique_constraint(
+  author_title => [qw(author title) ]
+);
 
 1;

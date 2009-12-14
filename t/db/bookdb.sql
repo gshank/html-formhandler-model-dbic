@@ -79,7 +79,8 @@ CREATE TABLE book (
     borrower int REFERENCES borrower,
     borrowed varchar(100),
     owner int REFERENCES user,
-    extra varchar(100)
+    extra varchar(100),
+	CONSTRAINT author_title UNIQUE (author, title)
 );
 INSERT INTO "book" VALUES(1, '0-7475-5100-6', 'Harry Potter and the Order of the Phoenix', 'J.K. Rowling', 'Boomsbury', 766, 2001, 1, 5, 1, '', 2, '');
 INSERT INTO "book" VALUES(2, '9 788256006199', 'Idioten', 'Fjodor Mikhajlovitsj Dostojevskij', 'Interbook', 303, 1901, 2, 3, 2, '2004-00-10', 2, '');
