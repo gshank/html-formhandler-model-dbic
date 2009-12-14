@@ -155,6 +155,20 @@ in the form class - that method is called instead.
 =head2 validate_unique
 
 For fields that are marked "unique", checks the database for uniqueness.
+The unique constraints registered in the DBIC result source (see
+L<DBIx::Class::ResultSource/add_unique_constraint>) will also be inspected
+for uniqueness.  Alternatively, you can use the C<unique_constraints>
+attribute to limit uniqueness checking to only a select group of unique
+constraints.  Error messages can be specified in the C<unique_messages>
+attribute.  Here's an example where you might want to specify a unique
+widget name for a given department:
+
+   has '+unique_constraints' => ( default => sub { ['department_widget_name'] } );   
+   has '+unique_messages' => (
+      default => sub {
+         { department_widget_name => "Please choose a unique widget name for this department" };
+      }
+   );
 
 =head2 source
 
@@ -188,9 +202,9 @@ sub _build_unique_constraints {
 }
 
 has unique_messages => (
-	is      => 'ro',
-	isa     => 'HashRef',
-	default => sub { +{} },
+   is      => 'ro',
+   isa     => 'HashRef',
+   default => sub { +{} },
 );
 
 sub validate_model
@@ -428,10 +442,10 @@ sub validate_unique
 }
 
 sub unique_message_for_constraint {
-	my $self       = shift;
-	my $constraint = shift;
+   my $self       = shift;
+   my $constraint = shift;
 
-	return $self->unique_messages->{$constraint} ||= "Duplicate value for $constraint unique constraint";
+   return $self->unique_messages->{$constraint} ||= "Duplicate value for $constraint unique constraint";
 }
 
 sub _id_clause {
