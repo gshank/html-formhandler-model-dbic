@@ -198,7 +198,7 @@ has unique_constraints => (
 );
 sub _build_unique_constraints {
    my $self = shift;
-   return [$self->resultset->result_source->unique_constraint_names];
+   return [grep { $_ ne 'primary' } $self->resultset->result_source->unique_constraint_names];
 }
 
 has unique_messages => (
@@ -400,22 +400,29 @@ sub validate_unique
    {
 
       my @columns = $rs->result_source->unique_constraint_columns($constraint);
-
-      # all constraint column values must be either in...
-      next if @columns != grep {
-                  ( exists $value->{$_} && defined $value->{$_} )           # the form data
-                        ||                                                  #   OR
-                  ( $self->item && defined( $self->item->get_column($_) ) ) # the item
+      my @values = map {
+         exists( $value->{$_} ) ? $value->{$_} : undef
+            ||
+         ( $self->item ? $self->item->get_column($_) : undef )
       } @columns;
 
-      my %where = @id_clause;
+      next if @columns != @values; # don't check unique constraints for which we don't have all the values
 
-      @where{@columns} = @{ $value }{@columns};
+      next if grep { !defined $_ } @values; # don't check unique constraints with NULL values
 
-      my $count = $rs->search( \%where )->count;
+      my %where;
+      @where{@columns} = @values;
+
+      my $count = $rs->search( \%where )->search({@id_clause})->count;
       next if $count < 1;
 
-      my($field) = grep { defined $_} map { $self->field($_) } @columns;
+      # now find the field we can attach the error to
+      my $field;
+      for my $c(@columns)
+      {
+         ($field) = grep { defined $_->accessor eq $c} @$fields;
+         last if $field;
+      }
       next unless defined $field;
 
       my $field_error = $self->unique_message_for_constraint($constraint);
