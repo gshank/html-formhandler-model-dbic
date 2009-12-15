@@ -394,11 +394,9 @@ sub validate_unique
    @id_clause = _id_clause( $rs, $self->item_id ) if defined $self->item;
    
    my $value = $self->value;
-
    # validate unique constraints in the model
    for my $constraint (@{ $self->unique_constraints })
    {
-
       my @columns = $rs->result_source->unique_constraint_columns($constraint);
       my @values = map {
          exists( $value->{$_} ) ? $value->{$_} : undef
@@ -407,20 +405,18 @@ sub validate_unique
       } @columns;
 
       next if @columns != @values; # don't check unique constraints for which we don't have all the values
-
       next if grep { !defined $_ } @values; # don't check unique constraints with NULL values
 
       my %where;
       @where{@columns} = @values;
-
       my $count = $rs->search( \%where )->search({@id_clause})->count;
       next if $count < 1;
 
       # now find the field we can attach the error to
       my $field;
-      for my $c(@columns)
+      for my $col (@columns)
       {
-         ($field) = grep { defined $_->accessor eq $c} @$fields;
+         ($field) = grep { $_->accessor eq $col } @$fields;
          last if $field;
       }
       next unless defined $field;
