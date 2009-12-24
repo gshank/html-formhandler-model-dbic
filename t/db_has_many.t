@@ -38,6 +38,14 @@ $form->process( item => $user, params => {} );
 ok( $form->field('addresses')->field('0')->field('country')->has_options,
     'addresses has options after process' );
 
+# the initial empty element in a repeatable field should
+# still be there after 'process'
+my $form2 = Repeatable::Form::User->new;
+$form2->process( item => $schema->resultset('User')->new_result( {} ),
+    params => {} );
+ok( $form2->field('addresses')->field('0'),
+    'Initial field exists after process' );
+
 my $fif = {
    'addresses.0.city' => 'Middle City',
    'addresses.0.country' => 'GK',
