@@ -81,6 +81,7 @@ has 'tt' => (
 
 has 'class_prefix' => (
     is => 'ro',
+    isa => 'Str',
 );
 
 has 'style' => (
