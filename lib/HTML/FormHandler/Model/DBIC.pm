@@ -157,7 +157,8 @@ in the form class - that method is called instead.
 For fields that are marked "unique", checks the database for uniqueness.
 The unique constraints registered in the DBIC result source (see
 L<DBIx::Class::ResultSource/add_unique_constraint>) will also be inspected
-for uniqueness.  Alternatively, you can use the C<unique_constraints>
+for uniqueness unless the field's 'unique' attribute is set to false.
+Alternatively, you can use the C<unique_constraints>
 attribute to limit uniqueness checking to only a select group of unique
 constraints.  Error messages can be specified in the C<unique_messages>
 attribute.  Here's an example where you might want to specify a unique
@@ -420,6 +421,9 @@ sub validate_unique
          last if $field;
       }
       next unless defined $field;
+      # the check for fields that do *not* want a unique check should be done
+      # earlier, but this is the simplest place
+      next if ( $field->has_unique && $field->unique == 0 );
 
       my $field_error = $self->unique_message_for_constraint($constraint);
       $field->add_error( $field_error );
