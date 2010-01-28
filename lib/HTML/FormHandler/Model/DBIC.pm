@@ -534,14 +534,6 @@ sub resultset
    return $self->schema->resultset( $self->source_name || $self->item_class );
 }
 
-sub new_lookup_options
-{
-   my ( $self, $field, $accessor_path ) = @_;
-
-   my $source = $self->get_source( $accessor_path );
-   $self->lookup_options( $field, $source );
-}
-
 sub get_source
 {
    my ( $self, $accessor_path ) = @_;
