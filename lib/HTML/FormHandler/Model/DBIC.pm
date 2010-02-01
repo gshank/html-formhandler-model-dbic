@@ -5,9 +5,9 @@ extends 'HTML::FormHandler';
 use Carp;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
-use Scalar::Util qw(blessed);
+use Scalar::Util ('blessed');
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 =head1 NAME
 
@@ -235,10 +235,15 @@ sub update_model
         updates => $self->values,
     );
     $update_params{ object } = $self->item if $self->item;
-    my $new_item = DBIx::Class::ResultSet::RecursiveUpdate::Functions::recursive_update( %update_params );
-    $new_item->discard_changes;
-    $self->item($new_item);
-    return $new_item;
+    my $new_item;
+    # perform update in a transaction, since RecursiveUpdate may do multiple
+    # updates if there are compound or multiple fields
+    $self->schema->txn_do( sub {
+        $new_item = DBIx::Class::ResultSet::RecursiveUpdate::Functions::recursive_update( %update_params );
+        $new_item->discard_changes;
+    });
+    $self->item($new_item) if $new_item;
+    return $self->item;
 }
 
 # undocumented because this is going to be replaced
