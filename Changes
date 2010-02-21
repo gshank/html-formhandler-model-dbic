@@ -1,3 +1,7 @@
+0.09 Sun Feb 19, 2010
+    Initial implementation of automatic fields from DBIC
+       (add DBIC::Model::TypeMap & TraitFor::DBICFields)
+    Remove tests for auto fields
 0.08 Mon Feb 1, 2010
     Add txn_do to model_update
     Add skipping unique validation if field has unique => 0
