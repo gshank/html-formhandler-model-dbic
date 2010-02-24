@@ -186,4 +186,43 @@ INSERT INTO country VALUES ('RU','RUSSIAN FEDERATION','Russian Federation','RUS'
 INSERT INTO country VALUES ('GB','UNITED KINGDOM','United Kingdom','GBR','826');
 INSERT INTO country VALUES ('US','UNITED STATES','United States','USA','840');
 INSERT INTO country VALUES ('ZW','ZIMBABWE','Zimbabwe','ZWE','716');
+
+
+--
+-- Table: pages
+--
+
+CREATE TABLE pages (
+  id INTEGER PRIMARY KEY NOT NULL,
+  display_value VARCHAR2(30) NOT NULL,
+  description VARCHAR2(200),
+  modified_date TIMESTAMP(11),
+  created_date TIMESTAMP(11) NOT NULL DEFAULT 'systimestamp'
+);
+
+--
+-- Table: roles_pages
+--
+
+CREATE TABLE roles_pages (
+  role_fk NUMBER(38) NOT NULL,
+  page_fk NUMBER(38) NOT NULL,
+  edit_flag NUMBER(38) NOT NULL DEFAULT '0 ',
+  created_date TIMESTAMP(11) NOT NULL DEFAULT 'systimestamp',
+  PRIMARY KEY (role_fk, page_fk)
+);
+
+CREATE INDEX roles_pages_idx_page_fk ON roles_pages (page_fk);
+
+CREATE TABLE roles (
+  id INTEGER PRIMARY KEY NOT NULL,
+  display_value VARCHAR2(30) NOT NULL,
+  description VARCHAR2(200),
+  active smallint(38) NOT NULL DEFAULT '1 ',
+  modified_date TIMESTAMP(11),
+  created_date DATETIME(11) NOT NULL DEFAULT 'systimestamp'
+);
+
+CREATE UNIQUE INDEX unique_role ON roles (display_value);
+
 COMMIT;
