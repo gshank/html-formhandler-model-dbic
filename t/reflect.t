@@ -20,6 +20,7 @@ my $form = HTML::FormHandler::Model::DBIC->new_with_traits(
    item => $book );
 ok( $form, 'get form');
 ok( $form->can('build_type_map'), 'trait applied' );
+is( $form->num_fields, 12, 'right number of fields' );
 
 my $title_field = $form->field('title');
 ok( $title_field, 'title field exists');
@@ -28,5 +29,13 @@ ok( $author_field, 'author field exists');
 
 ok( $title_field->value eq 'Harry Potter and the Order of the Phoenix', 'get title from form');
 is( $title_field->temp, 'testing', 'got field def from extra' );
+
+$form = HTML::FormHandler::Model::DBIC->new_with_traits(
+    traits => ['HTML::FormHandler::TraitFor::DBICFields'],
+    include => ['title', 'author' ],
+    field_list => [ 'submit' => { type => 'Submit', value => 'Save', order => 99 } ],
+    item => $book ); 
+ok( $form, 'get form' );
+is( $form->num_fields, 3, 'right number of fields' );
 
 done_testing;
