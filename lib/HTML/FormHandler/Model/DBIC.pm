@@ -419,6 +419,17 @@ sub validate_unique
    for my $constraint (@{ $self->unique_constraints })
    {
       my @columns = $rs->result_source->unique_constraint_columns($constraint);
+
+      # check for matching field in the form 
+      my $field;
+      for my $col (@columns)
+      {
+         ($field) = grep { $_->accessor eq $col } @$fields;
+         last if $field;
+      }
+      next unless defined $field;
+      next if ( $field->has_unique ); # already handled or don't do
+
       my @values = map {
          exists( $value->{$_} ) ? $value->{$_} : undef
             ||
@@ -432,18 +443,6 @@ sub validate_unique
       @where{@columns} = @values;
       my $count = $rs->search( \%where )->search({@id_clause})->count;
       next if $count < 1;
-
-      # now find the field we can attach the error to
-      my $field;
-      for my $col (@columns)
-      {
-         ($field) = grep { $_->accessor eq $col } @$fields;
-         last if $field;
-      }
-      next unless defined $field;
-      # the check for fields that do *not* want a unique check should be done
-      # earlier, but this is the simplest place
-      next if ( $field->has_unique ); # already handled or don't do
 
       my $field_error = $self->unique_message_for_constraint($constraint);
       $field->add_error( $field_error );
