@@ -400,6 +400,21 @@ sub validate_unique
    @id_clause = _id_clause( $rs, $self->item_id ) if defined $self->item;
    
    my $value = $self->value;
+   for my $field ( @$fields )
+   {
+      next unless $field->unique;
+      next if $field->has_errors;
+      my $value = $field->value;
+      next unless defined $value;
+      my $accessor   = $field->accessor;
+
+      my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
+      next if $count < 1;
+      my $field_error = $field->unique_message || 'Duplicate value for ' . $field->label;
+      $field->add_error( $field_error );
+      $found_error++;
+   }
+
    # validate unique constraints in the model
    for my $constraint (@{ $self->unique_constraints })
    {
@@ -428,24 +443,9 @@ sub validate_unique
       next unless defined $field;
       # the check for fields that do *not* want a unique check should be done
       # earlier, but this is the simplest place
-      next if ( $field->has_unique && $field->unique == 0 );
+      next if ( $field->has_unique ); # already handled or don't do
 
       my $field_error = $self->unique_message_for_constraint($constraint);
-      $field->add_error( $field_error );
-      $found_error++;
-   }
-
-   for my $field ( @$fields )
-   {
-      next unless $field->unique;
-      next if $field->has_errors;
-      my $value = $field->value;
-      next unless defined $value;
-      my $accessor   = $field->accessor;
-
-      my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
-      next if $count < 1;
-      my $field_error = $field->unique_message || 'Duplicate value for ' . $field->label;
       $field->add_error( $field_error );
       $found_error++;
    }

@@ -89,5 +89,6 @@ BookDB::Schema::Result::Book->many_to_many(
 BookDB::Schema::Result::Book->add_unique_constraint(
   author_title => [qw(author title) ]
 );
+__PACKAGE__->add_unique_constraint( 'isbn' => ['isbn'] );
 
 1;
