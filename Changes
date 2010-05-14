@@ -1,3 +1,5 @@
+0.10 Fri May 07, 2010
+    Adjust tests for changing precedence of defaults over item/init_object
 0.09 Sun Feb 19, 2010
     Initial implementation of automatic fields from DBIC
        (add DBIC::Model::TypeMap & TraitFor::DBICFields)
