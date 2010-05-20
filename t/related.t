@@ -100,7 +100,6 @@ $fif = {
 'occupation' => 'Programmer',
 'opt_in' => 0,
 'user_name' => 'Joe Smith',
-'addresses' => '',
 };
 is_deeply( $form->fif, $fif, 'fif for new item');
 is( $form->item->id, 6, 'new user' );
@@ -128,7 +127,6 @@ $params->{opt_in} = 0;
 $params->{license} = '';
 $params->{$_} = '' for qw/ country fav_book fav_cat /;
 $params->{'employers.0.employer_id'} = 5;
-$params->{'addresses'} = '';
 is_deeply( $form->fif, $params, 'fif is correct' );
 
 $form->process( item => $user );
