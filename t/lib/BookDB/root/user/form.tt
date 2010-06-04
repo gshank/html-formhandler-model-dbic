@@ -13,7 +13,7 @@
   [% form.render_field('opt_in') %]
   [% form.render_field('birthdate') %]
 <p>Employer</p>
-  [% form.render_field('employer') %]
+  [% form.render_field('employers') %]
 <p>Addresses</p>
 [% FOR ifield IN form.field('addresses').fields %]
    <div>
