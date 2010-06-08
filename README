@@ -17,6 +17,10 @@ The test directory contains an example Catalyst application.
 Execute it by executing 't/script/bookdb_server.pl' from the
 distribution root directory.
 
+If it doesn't work, check if you have SQLite installed and execute
+'sqlite3 t/db/book.db < t/db/bookdb.sql' from the same directory.
+
+
 SUPPORT AND DOCUMENTATION
 
 After installing, you can find documentation for this module with the
