@@ -24,16 +24,16 @@ Subclass your form from HTML::FormHandler::Model::DBIC:
 
 =head1 DESCRIPTION
 
-This is a separate L<DBIx::Class> model class for L<HTML::FormHandler>. In addition
+This is a separate L<DBIx::Class> model class for L<HTML::FormHandler>. It will save
+form fields automatically to the database. In addition
 it contains an example application (execute with t/script/bookdb_server.pl) and a form
 generator (L<HTML::FormHandler::Generator::DBIC>).
-
 It will handle normal DBIC column accessors and a number of DBIC relationships.
-Single Select fields will handle 'belongs_to' relationships, where the related
-table is used to construct a list of choices. Multiple Select fields use a 
-many_to_many pseudo-relation to create the select list. A Compound field can
-represent a single relation. A Repeatable field will map onto a multiple
-relationship. 
+
+This model supports using DBIx::Class result_source accessors just as
+if they were standard columns. 
+Since the forms that use this model are subclasses of it, you can subclass
+any of the subroutines to provide custom functionality.
 
 There are two ways to get a valid DBIC model. The first way is to set:
 
@@ -68,19 +68,27 @@ The accessor names of the fields in your form should match column, relationship,
 or accessor names in your DBIx::Class result source. Usually the field name
 and accessor are the same, but they may be different.
 
-=head1 DESCRIPTION
+=head1 DBIC Relationships
 
-This DBIC model for HTML::FormHandler will save form fields automatically to
-the database, will retrieve selection lists from the database
-(with type => 'Select' and a fieldname containing a belongs_to relationship,
-or type => 'Multiple' and a many_to_many relationship),
-and will save the selected values (one value for 'Select', multiple
-values in a mapping table for a 'Multiple' field).
+=head2 belongs_to
 
-This model supports using DBIx::Class result_source accessors just as
-if they were standard columns. 
-Since the forms that use this model are subclasses of it, you can subclass
-any of the subroutines to provide custom functionality.
+Single Select fields will handle 'belongs_to' relationships, where the related
+table is used to construct a selection list from the database. 
+
+=head2 many_to_many
+
+Multiple Select fields use a 'many_to_many' pseudo-relation to retrieve the 
+selection list from the database.
+
+   has_field 'roles' => (
+      type => 'Multiple',
+      label_column => 'role',
+   );
+
+You need to supply 'label_column' to indicate which column should be used as label.
+
+A Compound field can represent a single relation. A Repeatable field will map onto a multiple
+relationship. 
 
 More information is available from:
 
