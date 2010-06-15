@@ -104,6 +104,12 @@ ok( $validated, 'now form validates' );
 $form->process;
 is( $book->publisher, 'EreWhon Publishing', 'publisher has not changed');
 
+# test that multiple fields (genres) with value of [] deletes genres
+is( $book->genres->count, 2, 'multiple select list updated ok');
+$good->{genres} = [];
+$form->process( $good );
+is( $book->genres->count, 0, 'multiple select list has no selected options');
+
 $form = BookDB::Form::Book->new(schema => $schema, active_column => 'is_active');
 is( scalar @{$form->field( 'genres' )->options}, 0, 'active_column test' );
 
