@@ -18,7 +18,7 @@ license 'perl';
 repository 'http://github.com/gshank/html-formhandler-model-dbic/tree/master';
 
 # prereqs
-requires 'HTML::FormHandler' => '0.31003';
+requires 'HTML::FormHandler' => '0.32000';
 requires 'Moose' => '0.90';
 requires 'DBIx::Class';
 requires 'DBIx::Class::ResultSet::RecursiveUpdate' => '0.012';
