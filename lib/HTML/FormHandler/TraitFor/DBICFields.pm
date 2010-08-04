@@ -10,7 +10,7 @@ use HTML::FormHandler::Model::DBIC::TypeMap;
 This is a role to pull fields from a DBIx::Class result source. Requires
 existence of a 'source' attribute.
 
-This feature is new. It doesn't handle relationships yet, and the 
+This feature is new. It doesn't handle relationships yet, and the
 interfaces are still subject to change.
 
   my $form = HTML::FormHandler::Model::DBIC->new_with_traits(
@@ -22,36 +22,36 @@ interfaces are still subject to change.
 
 has 'fields_from_model' => ( is => 'ro', default => 1 );
 
-has 'include' => ( is => 'ro', 
+has 'include' => ( is => 'ro',
     traits => ['Array'],
-    isa => 'ArrayRef[Str]', 
-    default => sub {[]}, 
+    isa => 'ArrayRef[Str]',
+    default => sub {[]},
     handles => {
        all_includes => 'elements',
        has_includes => 'count',
     }
 );
-has 'exclude' => ( is => 'ro', 
+has 'exclude' => ( is => 'ro',
     traits => ['Array'],
-    isa => 'ArrayRef[Str]', 
+    isa => 'ArrayRef[Str]',
     default => sub {[]},
     handles => {
        has_excludes => 'count',
     }
 );
-has 'rels' => ( is => 'ro', 
+has 'rels' => ( is => 'ro',
     traits => ['Array'],
-    isa => 'ArrayRef[Str]', 
+    isa => 'ArrayRef[Str]',
     default => sub {[]},
     handles => {
        has_rels => 'count',
     }
 );
-has 'type_map_class' => ( is => 'ro', isa => 'Str', 
+has 'type_map_class' => ( is => 'ro', isa => 'Str',
      default => 'HTML::FormHandler::Model::DBIC::TypeMap' );
 has 'type_map_args' => ( is => 'ro', isa => 'HashRef', default => sub {{}} );
 has 'type_map' => ( is => 'ro', lazy => 1, builder => 'build_type_map',
-    handles => ['type_for_column', 'type_for_rel'], 
+    handles => ['type_for_column', 'type_for_rel'],
 );
 sub build_type_map {
     my $self = shift;

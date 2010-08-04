@@ -20,7 +20,7 @@ An example of a non-database form
 
 =head1 DESCRIPTION
 
-User Controller 
+User Controller
 
 =cut
 
@@ -76,7 +76,7 @@ sub form
 
    my $user = $c->stash->{user};
    $c->stash( form => $self->user_form, template => 'user/form.tt' );
-   $self->user_form->process( item => $user, 
+   $self->user_form->process( item => $user,
       params => $c->req->parameters );
    return unless $self->user_form->validated;
    my $result = $self->user_form->values;

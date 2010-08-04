@@ -18,70 +18,70 @@ Catalyst Form.
 
 =cut
 
-has '+item_class' => ( default => 'Book' );
+has '+item_class'        => ( default => 'Book' );
 has '+widget_name_space' => ( default => sub { ['BookDB::Form::Widget'] } );
-has '+widget_wrapper' => ( default => 'Para' );
+has '+widget_wrapper'    => ( default => 'Para' );
 
-has_field 'title'  => (
-				type => 'Text',
-				required => 1,
-				required_message => 'A book must have a title.',
-				label => 'Title',
-				order => '1',
-			);
-has_field 'author'  => (
-				type => 'Text',
-				label => 'Author',
-				order => '2',
-			);
-            # has_many relationship pointing to mapping table
-has_field 'genres'  => (
-				type => 'Multiple',
-				label => 'Genres',
-                label_column => 'name',
-			    order => '3',
-            );
+has_field 'title' => (
+    type             => 'Text',
+    required         => 1,
+    required_message => 'A book must have a title.',
+    label            => 'Title',
+    yorder           => '1',
+);
+has_field 'author' => (
+    type  => 'Text',
+    label => 'Author',
+    order => '2',
+);
+
+# has_many relationship pointing to mapping table
+has_field 'genres' => (
+    type         => 'Multiple',
+    label        => 'Genres',
+    label_column => 'name',
+    order        => '3',
+);
 has_field 'isbn' => (
-				type => 'Text',
-				label => 'ISBN',
-	         order => '5',
-            unique => 1,
-			);
-has_field 'publisher'  => (
-				type => 'Text',
-				label => 'Publisher',
-			    order => '4',
-			);
+    type   => 'Text',
+    label  => 'ISBN',
+    order  => '5',
+    unique => 1,
+);
+has_field 'publisher' => (
+    type  => 'Text',
+    label => 'Publisher',
+    order => '4',
+);
 has_field 'format' => (
-				type => 'Select',
-				label => 'Format',
-			    order => '6',
-			);
-has_field 'year'  => (
-				type => 'Integer',
-				range_start => '1900',
-				range_end => '2020',
-				label => 'Year',
-				order => '7',
-			);
+    type  => 'Select',
+    label => 'Format',
+    order => '6',
+);
+has_field 'year' => (
+    type        => 'Integer',
+    range_start => '1900',
+    range_end   => '2020',
+    label       => 'Year',
+    order       => '7',
+);
 has_field 'pages' => (
-				type => 'Integer',
-				label => 'Pages',
-				order => '8',
-			);
-has_field 'comment'  => (
-            type => 'Text',
-            order => 9,
-         );
+    type  => 'Integer',
+    label => 'Pages',
+    order => '8',
+);
+has_field 'comment' => (
+    type  => 'Text',
+    order => 9,
+);
 
 has_field submit => ( type => 'Submit', value => 'Update' );
 
 sub validate_year {
-	my ( $self, $field ) = @_;
-	$field->add_error('Invalid year')
-	     if (($field->value > 3000) || ($field->value < 1600));
-};
-
+    my ( $self, $field ) = @_;
+    $field->add_error('Invalid year')
+      if ( ( $field->value > 3000 ) || ( $field->value < 1600 ) );
+}
 
 =head1 AUTHOR
 

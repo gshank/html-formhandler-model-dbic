@@ -24,7 +24,7 @@ BookDB::Schema::Result::BooksGenres->add_columns(
   },
 );
 BookDB::Schema::Result::BooksGenres->set_primary_key(('book_id', 'genre_id'));
-   
+
 BookDB::Schema::Result::BooksGenres->belongs_to(
   "book",
   "BookDB::Schema::Result::Book",

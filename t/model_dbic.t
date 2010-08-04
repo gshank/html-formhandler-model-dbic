@@ -5,7 +5,7 @@ use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
 
-my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db'); 
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 
 ok($schema, 'get schema');
 
@@ -38,7 +38,7 @@ ok( $title_field->value eq 'Harry Potter and the Order of the Phoenix', 'get tit
 
 ok( $title_field->order == 1, 'order for title');
 
-ok( $author_field->order == 2, 'order for author'); 
+ok( $author_field->order == 2, 'order for author');
 
 
 {

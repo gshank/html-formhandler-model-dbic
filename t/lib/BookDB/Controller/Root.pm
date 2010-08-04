@@ -10,7 +10,7 @@ use base 'Catalyst::Controller';
 #
 __PACKAGE__->config->{namespace} = '';
 
-sub index : Path Args 
+sub index : Path Args
 {
    my ( $self, $c ) = @_;
    $c->res->redirect('/book');
@@ -32,7 +32,7 @@ MyApp::Controller::Root - Root Controller for MyApp
 
 Attempt to render a view, if needed.
 
-=cut 
+=cut
 
 sub end : ActionClass('RenderView') { }
 

@@ -58,7 +58,7 @@ __PACKAGE__->belongs_to(
     'BookDB::Schema::Result::Country',
     { iso => 'country_iso' },
 );
-__PACKAGE__->belongs_to('license' => 'BookDB::Schema::Result::License', 
+__PACKAGE__->belongs_to('license' => 'BookDB::Schema::Result::License',
    { 'foreign.license_id' => 'self.license_id' } );
 
 

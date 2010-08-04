@@ -8,7 +8,7 @@ use DateTime::Format::W3CDTF;
 
 my $f = DateTime::Format::W3CDTF->new;
 
-has_field 'birthdate' => ( 
+has_field 'birthdate' => (
     apply => [ { transform => sub{ $f->parse_datetime( $_[0] ) } } ],
     deflation => sub { $f->format_date( $_[0] ) },
 );

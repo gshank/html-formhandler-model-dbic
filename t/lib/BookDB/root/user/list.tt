@@ -8,9 +8,9 @@
     <th/>
     [% counter = 0 %]
   </tr>
-  [% WHILE (user = users.next) %] 
+  [% WHILE (user = users.next) %]
   <tr[% IF (counter % 2) == 0 %] class="alt"[% END %]>
-    [% FOR column IN users.result_source.columns %] 
+    [% FOR column IN users.result_source.columns %]
     <td>[% user.$column %]</td>
     [% END %]
     <td>

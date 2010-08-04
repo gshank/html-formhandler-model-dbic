@@ -55,7 +55,7 @@ $good = {
     'publisher' => 'EreWhon Publishing',
 };
 ok( $form->process( item => $book, schema => $schema, params => $good ),
-  'update book with another request' ); 
+  'update book with another request' );
 
 my $bad_1 = {
     notitle => 'not req',
@@ -110,7 +110,7 @@ is_deeply( sort $genres_field->value, [2, 4], 'value of multiple field is correc
       my ( $self, $field ) = @_;
       $field->add_error( 'Field does not contain TWO' )
          unless $field->value eq 'TWO';
-    } 
+    }
 }
 
 $form = My::Form->new;

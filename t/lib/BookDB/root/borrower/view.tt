@@ -13,7 +13,7 @@
     <tr>
       <td>[%book.title%]</td>
       <td>[%book.borrowed%]</td>
-      <td><a href="[% '/book/' _ book.id %]">View</a> 
+      <td><a href="[% '/book/' _ book.id %]">View</a>
           <a href="[% '/book/' _ book.id _ '/return' %]">Return</a></td>
     </tr>
 [% END %]

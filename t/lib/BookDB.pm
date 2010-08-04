@@ -33,10 +33,10 @@ Catalyst based application.
 
 =cut
 
-sub this_chained_uri 
+sub this_chained_uri
 {
    my $c = shift;
-   return $c->uri_for($c->action,$c->req->captures,@_);    
+   return $c->uri_for($c->action,$c->req->captures,@_);
 }
 
 sub chained_uri_for

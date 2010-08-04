@@ -21,7 +21,7 @@ CREATE table licenses (
    license_id INTEGER,
    name VARCHAR(32),
    label VARCHAR(32),
-   active INTEGER 
+   active INTEGER
 );
 INSERT INTO "licenses" VALUES (1, "Perl Artistic", "Perl Artistic License", 1  );
 INSERT INTO "licenses" VALUES (2, "GPL", "GNU General Public License", 1 );

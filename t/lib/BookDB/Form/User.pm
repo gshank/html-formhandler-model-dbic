@@ -14,7 +14,7 @@ has_field 'occupation';
 has_field 'country' => ( type => 'Select' );
 has_field 'license' => ( type => 'Select' );
 has_field 'opt_in' => ( type => 'Checkbox' );
-has_field 'birthdate' => ( 
+has_field 'birthdate' => (
     type => 'Compound',
     apply => [ { transform => sub{ DateTime->new( $_[0] ) } } ],
 );
@@ -48,7 +48,7 @@ sub init_value_license
 
    return 0 unless $item && $item->license_id && $item->license_id != 0;
    return $item->license_id;
-   
+
 }
 sub validate_occupation
 {

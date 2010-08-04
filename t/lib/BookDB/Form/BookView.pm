@@ -11,11 +11,11 @@ has_field 'borrower' => ( type => 'Select' );
 has_field 'borrowed';
 
 
-# List for the "view" part of this form. These are not updated 
+# List for the "view" part of this form. These are not updated
 # Not a standard form method. Convenience function
 sub view_list {
-	my @fields = ('title', 'author', 'genre', 'publisher', 'isbn', 'format', 'pages', 'year');
-	
+    my @fields = ('title', 'author', 'genre', 'publisher', 'isbn', 'format', 'pages', 'year');
+
     return wantarray ? @fields : \@fields;
 }
 

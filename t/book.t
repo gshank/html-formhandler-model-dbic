@@ -58,7 +58,7 @@ is( $book->author, undef, 'updated author with null value');
 is( $form->field('author')->value, undef, 'author value right in form');
 is( $form->field('publisher')->value, 'EreWhon Publishing', 'right publisher');
 
-my $value_hash = { %{$good}, 
+my $value_hash = { %{$good},
                    author => undef,
                    comment => undef,
                    year => undef,
@@ -129,6 +129,6 @@ $form = Test::Book->new;
 my $new_book = $schema->resultset('Book')->new_result({});
 $form->process( item => $new_book, params => {} );
 $form->process( item => $new_book, params => { title => 'abc' } );
-is( $form->result->num_results, 3, 'right number of results'); 
+is( $form->result->num_results, 3, 'right number of results');
 
 done_testing;

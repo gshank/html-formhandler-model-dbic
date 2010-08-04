@@ -15,7 +15,7 @@ BookDB::Controller::Borrower
 
 =head1 DESCRIPTION
 
-Controller for Borrower 
+Controller for Borrower
 
 =cut
 

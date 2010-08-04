@@ -18,7 +18,7 @@ ok( !$form->process, 'Empty data' );
 my $params = {
     'title' => 'How to Test Perl Form Processors',
     'author' => 'I.M. Author',
-    'isbn'   => $duplicate_isbn, 
+    'isbn'   => $duplicate_isbn,
     'publisher' => 'EreWhon Publishing',
 };
 

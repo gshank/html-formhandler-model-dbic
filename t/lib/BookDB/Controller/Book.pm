@@ -23,7 +23,7 @@ See L<BookDB>
 
 =head1 DESCRIPTION
 
-Book Controller 
+Book Controller
 
 =cut
 
@@ -84,7 +84,7 @@ sub form
       action => $c->uri_for($c->action, $c->req->captures ),
    );
    $c->stash( template => 'book/form.tt', form => $result );
-   return unless $result->validated; 
+   return unless $result->validated;
    $c->res->redirect( $c->uri_for('list') );
 }
 

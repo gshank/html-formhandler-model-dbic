@@ -7,7 +7,7 @@ with 'HTML::FormHandler::Render::Simple';
 
 =head1 NAME
 
-Form object for Borrower 
+Form object for Borrower
 
 =head1 DESCRIPTION
 

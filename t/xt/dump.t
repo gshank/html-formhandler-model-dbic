@@ -34,7 +34,7 @@ ok( $form->process( schema => $schema, params => $good ), 'Good data' );
 my $book = $form->item;
 END {
   $book->delete;
-} 
+}
 
 ok( $form->item, 'get new book object' );
 

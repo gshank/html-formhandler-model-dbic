@@ -9,12 +9,12 @@ use_ok('HTML::FormHandler::Model::DBIC::TypeMap');
 
 use BookDB::Schema;
 
-my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db'); 
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 
 ok($schema, 'get schema');
 
 my $book = $schema->resultset('Book')->find(1);
-my $form = HTML::FormHandler::Model::DBIC->new_with_traits( 
+my $form = HTML::FormHandler::Model::DBIC->new_with_traits(
    traits => ['HTML::FormHandler::TraitFor::DBICFields'],
    field_list => [ 'submit' => { type => 'Submit', value => 'Save', order => 99 } ],
    item => $book );
@@ -34,7 +34,7 @@ $form = HTML::FormHandler::Model::DBIC->new_with_traits(
     traits => ['HTML::FormHandler::TraitFor::DBICFields'],
     include => ['title', 'author' ],
     field_list => [ 'submit' => { type => 'Submit', value => 'Save', order => 99 } ],
-    item => $book ); 
+    item => $book );
 ok( $form, 'get form' );
 is( $form->num_fields, 3, 'right number of fields' );
 

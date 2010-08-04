@@ -6,7 +6,7 @@ use namespace::autoclean;
 
 =head1 SYNOPSIS
 
-Use by L<HTML::FormHandler::TraitFor::DBICFields>. 
+Use by L<HTML::FormHandler::TraitFor::DBICFields>.
 
 =cut
 
@@ -41,7 +41,7 @@ sub type_for_column {
     my %field_def;
     my $type;
     if( my $def = $info->{extra}->{field_def} ) {
-        return $def; 
+        return $def;
     }
     if( $info->{data_type} ) {
         $type = $self->get_field_type( lc($info->{data_type}) );
@@ -51,9 +51,9 @@ sub type_for_column {
     $field_def{size} = $info->{size}
            if( $type eq 'Textarea' && $info->{size} );
     $field_def{required} = 1 if not $info->{is_nullable};
-    return \%field_def; 
+    return \%field_def;
 }
-     
+
 # stub
 sub type_for_rel {
     my ( $self, $rel ) = @_;

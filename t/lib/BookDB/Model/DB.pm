@@ -7,7 +7,7 @@ __PACKAGE__->config(
     schema_class => 'BookDB::Schema',
     connect_info => [
         'dbi:SQLite:t/db/book.db',
-        
+
     ],
 );
 

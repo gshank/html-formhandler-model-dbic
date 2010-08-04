@@ -8,7 +8,7 @@ our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
-   form_generator.pl --rs_name=Book --schema_name=BookDB::Schema::DB 
+   form_generator.pl --rs_name=Book --schema_name=BookDB::Schema::DB
             --db_dsn=dbi:SQLite:t/db/book.db > BookForm.pm
 
 =head1 DESCRIPTION

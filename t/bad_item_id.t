@@ -5,7 +5,7 @@ use_ok('HTML::FormHandler::Model::DBIC');
 
 use BookDB::Schema;
 
-my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db'); 
+my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 
 my $id = 99;
 my $record = $schema->resultset('Book')->find($id);

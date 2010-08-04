@@ -20,7 +20,7 @@ An author form
 
 =head1 DESCRIPTION
 
-User Controller 
+User Controller
 
 =cut
 
@@ -76,7 +76,7 @@ sub form
 
    $c->stash( form => $self->author_form, template => 'author/form.tt',
       action => $c->chained_uri_for->as_string );
-   return unless $self->form->validate( $c->stash->{author}, 
+   return unless $self->form->validate( $c->stash->{author},
       params => $c->req->parameters );
    $c->res->redirect( $c->uri_for('list') );
 }

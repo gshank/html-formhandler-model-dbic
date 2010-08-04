@@ -8,9 +8,9 @@
     <th/>
     [% counter = 0 %]
   </tr>
-  [% FOR book IN books %] 
+  [% FOR book IN books %]
   <tr[% IF (counter % 2) == 0 %] class="alt"[% END %]>
-    [% FOR column IN columns %] 
+    [% FOR column IN columns %]
     <td>[% book.$column %]</td>
     [% END %]
     <td>

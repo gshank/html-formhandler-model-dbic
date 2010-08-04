@@ -80,8 +80,8 @@ my $params = {
 $form->process( item_id => undef, params => $params);
 my $new_user = $form->item;
 my $new_employer = $schema->resultset('Employer')->find(5);
-END { 
-   $new_user->delete; 
+END {
+   $new_user->delete;
    $new_employer->delete;
 }
 ok( $form->validated, 'new related row validated');
@@ -107,7 +107,7 @@ $new_employer = $schema->resultset('Employer')->find(5);
 ok( $new_employer, 'new employer');
 
 my $new_fif = $form->fif;
-delete $new_fif->{license}; # removeinit_value 
+delete $new_fif->{license}; # removeinit_value
 $form->process($new_fif);
 ok( $form->validated, 'second pass validated');
 
