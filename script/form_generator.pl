@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+package form_generator.pl;
+# ABSTRACT: form generator
 use strict;
 use warnings;
 

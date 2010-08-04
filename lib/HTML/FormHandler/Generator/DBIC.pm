@@ -1,13 +1,10 @@
 package HTML::FormHandler::Generator::DBIC;
-use Moose;
+# ABSTRACT: form generator for DBIC
 
+use Moose;
 use DBIx::Class;
 use Template;
 our $VERSION = '0.03';
-
-=head1 NAME
-
-HTML::FormHandler::Generator::DBIC - generate form classes from DBIC schema
 
 =head1 SYNOPSIS
 
@@ -348,19 +345,6 @@ sub get_self_cols{
     has '+tt' => ( metaclass => 'NoGetopt' );
     has '+m2m' => ( metaclass => 'NoGetopt' );
 }
-
-
-
-=head1 AUTHOR
-
-Zbigniew Lukasiak
-
-=head1 COPYRIGHT
-
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-=cut
 
 __PACKAGE__->meta->make_immutable;
 use namespace::autoclean;

@@ -1,11 +1,8 @@
 package HTML::FormHandler::Model::DBIC::TypeMap;
+# ABSTRACT: type mape for DBICFields
 
 use Moose;
 use namespace::autoclean;
-
-=head1 NAME
-
-HTML::FormHandler::Model::DBIC::TypeMap
 
 =head1 SYNOPSIS
 

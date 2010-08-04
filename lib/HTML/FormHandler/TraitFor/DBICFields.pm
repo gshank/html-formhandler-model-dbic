@@ -1,12 +1,9 @@
 package HTML::FormHandler::TraitFor::DBICFields;
+# ABSTRACT: role to get fields from DBIx::Class result source
 
 use Moose::Role;
 requires ('source', 'schema');
 use HTML::FormHandler::Model::DBIC::TypeMap;
-
-=head1 NAME
-
-HTML::FormHandler::TraitFor::DBICFields
 
 =head1 SYNOPSIS
 

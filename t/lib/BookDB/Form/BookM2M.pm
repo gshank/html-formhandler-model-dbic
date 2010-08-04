@@ -20,7 +20,7 @@ Catalyst Form.
 has '+item_class' => ( default => 'Book' );
 
 sub field_list {
-	   [	
+	   [
 			title   => {
 				type => 'Text',
 				required => 1,
