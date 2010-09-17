@@ -347,7 +347,7 @@ sub lookup_options
    foreach my $row (@rows)
    {
       my $label = $row->$label_column;
-      next unless $label;   # this means there's an invalid value
+      next unless defined $label;   # this means there's an invalid value
       push @options, $row->id, $active_col && !$row->$active_col ? "[ $label ]" : "$label";
    }
    return \@options;
