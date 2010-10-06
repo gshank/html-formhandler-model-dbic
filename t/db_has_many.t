@@ -128,10 +128,9 @@ $params->{'addresses.3.street'} = "1101 Maple Street";
 $params->{'addresses.3.city'} = "Smallville";
 $params->{'addresses.3.country'} = "AT";
 $params->{'addresses.3.address_id'} = undef;
-
 $form->process($params);
 my $new_address = $form->item->search_related('addresses', { address_id => {'>', 3} })->single;
-END { $form->item->find_related('addresses', $new_address->id )->delete };
+is( $new_address->id, 7, 'new address created' );
 ok( $form->validated, 'validated with new address');
 is( $form->field('addresses.3.address_id')->value, $new_address->id, 'id for new row is correct');
 
