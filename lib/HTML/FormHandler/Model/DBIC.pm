@@ -5,7 +5,14 @@ use Moose;
 extends 'HTML::FormHandler';
 with 'HTML::FormHandler::TraitFor::Model::DBIC';
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
+
+=head1 SUMMARY
+
+Empty base class - see L<HTML::FormHandler::TraitFor::Model::DBIC> for
+documentation.
+
+=cut
 
 use namespace::autoclean;
 1;

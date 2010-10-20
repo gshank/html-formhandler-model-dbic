@@ -14,23 +14,38 @@ our $VERSION = '0.12';
 
 Subclass your form from HTML::FormHandler::Model::DBIC:
 
-    package MyApp:Form::User;
-
-    use Moose;
+    package MyApp::Form::User;
+    use HTML::FormHandler::Moose;
     extends 'HTML::FormHandler::Model::DBIC';
+
+or apply as a role to FormHandler class:
+
+   package MyApp::Form::User;
+   use HTML::FormHandler::Moose;
+   extends 'HTML::FormHandler';
+   with 'HTML::FormHandler::TraitFor::Model::DBIC';
 
 =head1 DESCRIPTION
 
-This is a separate L<DBIx::Class> model class for L<HTML::FormHandler>. It will save
-form fields automatically to the database. In addition
-it contains an example application (execute with t/script/bookdb_server.pl) and a form
+This is a separate L<DBIx::Class> model role for L<HTML::FormHandler>. It will save
+form fields automatically to the database. The distribution
+contains an example application (execute with t/script/bookdb_server.pl) and a form
 generator (L<HTML::FormHandler::Generator::DBIC>).
 It will handle normal DBIC column accessors and a number of DBIC relationships.
 
+L<HTML::FormHandler::TraitFor::DBICFields> can be used to auto-generate forms
+from a DBIC result.
+
+    my $book = $schema->resultset('Book')->find(1);
+    my $form = HTML::FormHandler::Model::DBIC->new_with_traits(
+       traits => ['HTML::FormHandler::TraitFor::DBICFields'],
+       field_list => [ 'submit' => { type => 'Submit', value => 'Save', order => 99 } ],
+       item => $book );
+
 This model supports using DBIx::Class result_source accessors just as
 if they were standard columns.
-Since the forms that use this model are subclasses of it, you can subclass
-any of the subroutines to provide custom functionality.
+Forms that need to do custom updating usually will subclass or use an 'around'
+method modifier on the 'update_model' method.
 
 There are two ways to get a valid DBIC model. The first way is to set:
 
