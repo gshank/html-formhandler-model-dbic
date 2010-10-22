@@ -24,6 +24,7 @@ my $good = {
     'format'       => 2,
     'isbn'   => '123-02345-0502-2' ,
     'publisher' => 'EreWhon Publishing',
+    'user_updated' => 1,
 };
 
 ok( $form->process( params => $good ), 'Good data' );

@@ -35,6 +35,10 @@ has_field 'author' => (
     order => '2',
 );
 
+has_field 'user_updated' => ( 
+    type => 'Boolean'
+);
+
 # has_many relationship pointing to mapping table
 has_field 'genres' => (
     type         => 'Multiple',
