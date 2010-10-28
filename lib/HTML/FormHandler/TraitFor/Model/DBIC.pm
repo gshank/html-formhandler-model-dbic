@@ -8,7 +8,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
 use Scalar::Util ('blessed');
 
-our $VERSION = '0.12';
+our $VERSION = '0.14';
 
 =head1 SYNOPSIS
 
@@ -228,6 +228,19 @@ has unique_messages => (
    default => sub { +{} },
 );
 
+has 'ru_flags' => (
+   is => 'rw',
+   isa => 'HashRef',
+   traits => ['Hash'],
+   builder => '_build_ru_flags',
+   handles => {
+       set_ru_flag => 'set',
+   }
+);
+sub _build_ru_flags {
+    { unknown_params_ok => 1 }
+}
+
 sub validate_model
 {
    my ($self) = @_;
@@ -253,6 +266,7 @@ sub update_model
     my %update_params = (
         resultset => $self->resultset,
         updates => $self->values,
+        %{$self->ru_flags},
     );
     $update_params{ object } = $self->item if $self->item;
     my $new_item;

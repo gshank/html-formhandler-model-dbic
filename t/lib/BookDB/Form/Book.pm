@@ -35,7 +35,7 @@ has_field 'author' => (
     order => '2',
 );
 
-has_field 'user_updated' => ( 
+has_field 'user_updated' => (
     type => 'Boolean'
 );
 

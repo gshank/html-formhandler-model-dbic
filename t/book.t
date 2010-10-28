@@ -12,9 +12,10 @@ use_ok( 'BookDB::Schema');
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 ok($schema, 'get db schema');
 
-my $form = BookDB::Form::Book->new(schema => $schema);
+my $item = $schema->resultset('Book')->new_result({});
+my $form = BookDB::Form::Book->new;
 
-ok( !$form->process, 'Empty data' );
+ok( !$form->process( item => $item ), 'Empty data' );
 
 # This is munging up the equivalent of param data from a form
 my $good = {
@@ -25,17 +26,19 @@ my $good = {
     'isbn'   => '123-02345-0502-2' ,
     'publisher' => 'EreWhon Publishing',
     'user_updated' => 1,
+    'comment' => 'this is a comment',
 };
 
-ok( $form->process( params => $good ), 'Good data' );
+ok( $form->process( item => $item, params => $good ), 'Good data' );
 
 my $book = $form->item;
 END { $book->delete };
 
 ok ($book, 'get book object from form');
 
+is( $book->extra, 'this is a comment', 'comment exists' );
 is_deeply( $form->values, $good, 'values correct' );
-$good->{$_} = '' for qw/ year comment pages/;
+$good->{$_} = '' for qw/ year pages/;
 is_deeply( $form->fif, $good, 'fif correct' );
 
 my $num_genres = $book->genres->count;
@@ -61,7 +64,6 @@ is( $form->field('publisher')->value, 'EreWhon Publishing', 'right publisher');
 
 my $value_hash = { %{$good},
                    author => undef,
-                   comment => undef,
                    year => undef,
                    pages => undef
                  };

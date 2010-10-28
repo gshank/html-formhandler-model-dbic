@@ -1,3 +1,6 @@
+0.14 Mon Oct 25, 2010
+    RU 0.20 throws errors on fields not in db; use new RU 0.21
+        attr 'ru_flags' to display warnings for fields not in db
 0.13 Wed Oct 20, 2010 
     use Dist::Zilla
     fix testcase for new RecursiveUpdate
