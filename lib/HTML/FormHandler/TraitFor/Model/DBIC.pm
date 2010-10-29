@@ -200,6 +200,26 @@ Returns a DBIx::Class::ResultSource object for this Result Class.
 This method returns a resultset from the "item_class" specified
 in the form (C<< $schema->resultset( $form->item_class ) >>)
 
+=head1 Attributes
+
+=over
+
+=item schema
+
+=item source_name
+
+=item unique_constraints
+
+=item unique_messages
+
+=item ru_flags
+
+L<DBIx::Class::ResultSet::RecursiveUpdate> is used to interface with L<DBIx::Class>.
+By default, the flag 'unknown_params_ok' is passed in. The 'ru_flags' attribute is
+a hashref, and also provides 'set_ru_flag'.
+
+=back
+
 =cut
 
 has 'schema' => (
