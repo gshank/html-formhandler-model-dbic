@@ -367,14 +367,20 @@ sub lookup_options
    return unless $source;
 
    my $label_column = $field->label_column;
-   return unless $source->has_column($label_column);
+   return unless ($source->has_column($label_column) || $source->can($label_column) );
 
    my $active_col = $self->active_column || $field->active_column;
    $active_col = '' unless $source->has_column($active_col);
    my $sort_col = $field->sort_column;
-   $sort_col = defined $sort_col && $source->has_column($sort_col) ? $sort_col : $label_column;
-
    my ($primary_key) = $source->primary_columns;
+   
+   # if no sort_column and label_column is a source method, not a real column, must 
+   # use some other column for sort. There's probably some other column that should
+   # be specified, but this will prevent breakage
+   if ( !(defined $sort_col && $source->has_column($sort_col)) ) {
+       $sort_col = $source->has_column($label_column) ? $label_column : $primary_key;
+   }
+
 
    # If there's an active column, only select active OR items already selected
    my $criteria = {};
