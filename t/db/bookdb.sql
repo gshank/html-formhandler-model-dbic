@@ -16,6 +16,18 @@ INSERT INTO "user" VALUES ( 3, 'sam', 'Technical', 'Higher Order Perl', 'program
 INSERT INTO "user" VALUES ( 4, 'jsw', 'Historical', 'History of the World', 'unemployed', 'RU', '1965-03-24 22:22:22', 0, 4 );
 INSERT INTO "user" VALUES ( 5, 'plax', 'Sci-Fi', 'Fungibility', 'editor', 'PL', '1977-10-24 22:22:22', 1, 1 );
 
+CREATE TABLE options (
+    options_id INTEGER PRIMARY KEY,
+    option_one VARCHAR(32),
+    option_two VARCHAR(32),
+    option_three VARCHAR(32),
+    user_id INTEGER
+);
+INSERT INTO "options" VALUES (1, 'blue', 'red', 'green', 1);
+INSERT INTO "options" VALUES (2, 'orange', 'purple', 'yellow', 2);
+INSERT INTO "options" VALUES (3, 'green', 'sky blue', 'fuchsia', 3);
+INSERT INTO "options" VALUES (4, 'turquoise', 'teal', 'pumpkin', 4);
+INSERT INTO "options" VALUES (5, 'gray', 'brown', 'black', 5);
 
 CREATE table licenses (
    license_id INTEGER,

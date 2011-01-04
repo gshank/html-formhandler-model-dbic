@@ -60,6 +60,7 @@ __PACKAGE__->belongs_to(
 );
 __PACKAGE__->belongs_to('license' => 'BookDB::Schema::Result::License',
    { 'foreign.license_id' => 'self.license_id' } );
-
+__PACKAGE__->has_one('options' => 'BookDB::Schema::Result::Options',
+   { 'foreign.user_id' => 'self.user_id' } );
 
 1;
