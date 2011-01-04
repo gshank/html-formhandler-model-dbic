@@ -10,6 +10,17 @@ my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
 my $user = $schema->resultset('User')->find(1);
 
 {
+    package Options::Field;
+    use HTML::FormHandler::Moose;
+    extends 'HTML::FormHandler::Field::Compound';
+
+    has_field 'options_id' => ( type => 'PrimaryKey' );
+    has_field 'option_one';
+    has_field 'option_two';
+    has_field 'option_three';
+}
+
+{
    package Form::User;
    use HTML::FormHandler::Moose;
    extends 'HTML::FormHandler::Model::DBIC';
@@ -17,11 +28,7 @@ my $user = $schema->resultset('User')->find(1);
    has_field 'user_name';
    has_field 'occupation';
 
-   has_field 'options' => ( type => 'Compound' );
-   has_field 'options.options_id' => ( type => 'PrimaryKey' );
-   has_field 'options.option_one';
-   has_field 'options.option_two';
-   has_field 'options.option_three';
+   has_field 'options' => ( type => '+Options::Field' );
 
 }
 
