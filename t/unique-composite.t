@@ -28,6 +28,6 @@ my $error = $form->field('author')->errors->[0];
 
 is( $error, 'Duplicate value for author_title unique constraint', 'error message for duplicate unique constraint value');
 
-is($form->unique_message_for_constraint('author_title'), $error, 'unique constraint message saved');
+is($form->unique_message_for_constraint('author_title'), 'Duplicate value for [_1] unique constraint', 'unique constraint message saved');
 is($form->unique_message_for_constraint('foo'), 'a unique constraint error message', 'unique constraint accepted in constructor');
 done_testing;

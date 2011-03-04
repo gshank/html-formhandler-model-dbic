@@ -470,8 +470,8 @@ sub validate_unique
 
       my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
       next if $count < 1;
-      my $field_error = $field->unique_message || 'Duplicate value for ' . $field->label;
-      $field->add_error( $field_error );
+      my $field_error = $field->unique_message || 'Duplicate value for [_1]';
+      $field->add_error( $field_error, $field->loc_label );
       $found_error++;
    }
 
@@ -505,7 +505,7 @@ sub validate_unique
       next if $count < 1;
 
       my $field_error = $self->unique_message_for_constraint($constraint);
-      $field->add_error( $field_error );
+      $field->add_error( $field_error, $constraint );
       $found_error++;
    }
 
@@ -516,7 +516,7 @@ sub unique_message_for_constraint {
    my $self       = shift;
    my $constraint = shift;
 
-   return $self->unique_messages->{$constraint} ||= "Duplicate value for $constraint unique constraint";
+   return $self->unique_messages->{$constraint} ||= "Duplicate value for [_1] unique constraint";
 }
 
 sub _id_clause {
