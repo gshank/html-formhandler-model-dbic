@@ -1,3 +1,5 @@
+0.15 Mon May 16, 2011
+    Tweak t/related.t test for changes to HFH 0.34001
 0.14 Mon Oct 25, 2010
     RU 0.20 throws errors on fields not in db; use new RU 0.21
         attr 'ru_flags' to display warnings for fields not in db

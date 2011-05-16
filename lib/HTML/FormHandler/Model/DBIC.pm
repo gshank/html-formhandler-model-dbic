@@ -5,7 +5,7 @@ use Moose;
 extends 'HTML::FormHandler';
 with 'HTML::FormHandler::TraitFor::Model::DBIC';
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 =head1 SUMMARY
 
