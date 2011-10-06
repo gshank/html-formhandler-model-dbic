@@ -134,7 +134,7 @@ my $form_template = <<'END';
     [% FOR field = config.fields -%]
 [% field %]
     [% END -%]
-has_field 'submit' => ( widget => 'submit' )
+has_field 'submit' => ( widget => 'Submit' )
 }
 [% FOR field_class = self.list_field_classes %]
 [% SET cf = self.get_field_class_data( field_class ) %]
