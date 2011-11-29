@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More;
-use Data::Dumper;
 
 use lib 't/lib';
 use BookDB::Schema;
@@ -20,7 +19,5 @@ my @options = $form->field('books.0.genres')->options;
 is(scalar @options, 6, 'got right number of genre options' );
 
 my $fif = $form->fif;
-diag( Dumper($fif) );
-
 
 done_testing;
