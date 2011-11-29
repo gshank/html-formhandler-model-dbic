@@ -6,7 +6,7 @@
 <form action="[% action %]" method="post">
    [% form.field('title').render %]
 
-   [% form.field('author').render %]
+   [% form.field('authors').render %]
 
    [% form.field('genres').render %]
 

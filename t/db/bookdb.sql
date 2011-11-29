@@ -130,14 +130,14 @@ CREATE TABLE author_books (
     PRIMARY KEY (author_id, book_id)
 );
 
-INSERT INTO author_books VALUES (1, 1);
-INSERT INTO author_books VALUES (1, 7);
-INSERT INTO author_books VALUES (2, 2);
-INSERT INTO author_books VALUES (3, 3);
-INSERT INTO author_books VALUES (4, 4);
-INSERT INTO author_books VALUES (4, 5);
-INSERT INTO author_books VALUES (4, 6);
-INSERT INTO author_books VALUES (7, 5);
+INSERT INTO author_books (author_id, book_id) VALUES (1, 1);
+INSERT INTO author_books (author_id, book_id) VALUES (1, 7);
+INSERT INTO author_books (author_id, book_id) VALUES (2, 2);
+INSERT INTO author_books (author_id, book_id) VALUES (3, 3);
+INSERT INTO author_books (author_id, book_id) VALUES (4, 4);
+INSERT INTO author_books (author_id, book_id) VALUES (5, 4);
+INSERT INTO author_books (author_id, book_id) VALUES (6, 4);
+INSERT INTO author_books (author_id, book_id) VALUES (7, 5);
 
 CREATE TABLE borrower (
     id INTEGER PRIMARY KEY,

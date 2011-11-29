@@ -94,4 +94,14 @@ __PACKAGE__->many_to_many(
 );
 __PACKAGE__->add_unique_constraint( 'isbn' => ['isbn'] );
 
+sub author_list {
+    my $self = shift;
+    my @authors = $self->authors->all;
+    my @author_names; 
+    foreach my $author (@authors) {
+        push @author_names, $author->name;
+    }
+    return join(', ', @author_names);
+}
+
 1;
