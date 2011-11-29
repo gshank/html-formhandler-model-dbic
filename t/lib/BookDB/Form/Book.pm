@@ -27,11 +27,11 @@ has_field 'title' => (
     required         => 1,
     required_message => 'A book must have a title.',
     label            => 'Title',
-    yorder           => '1',
+    order           => '1',
 );
-has_field 'author' => (
-    type  => 'Text',
-    label => 'Author',
+has_field 'authors' => (
+    type  => 'Multiple',
+    label => 'Authors',
     order => '2',
 );
 

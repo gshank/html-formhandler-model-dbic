@@ -24,7 +24,6 @@ ok( !$form->process( item_id => undef, schema => $schema ), 'Empty data' );
 # This is munging up the equivalent of param data from a form
 my $good = {
     'title' => 'How to Test Perl Form Processors',
-    'author' => 'I.M. Author',
     'genres' => [2, 4],
     'format'       => 2,
     'isbn'   => '123-02345-0502-2' ,
@@ -48,7 +47,6 @@ is( $form->field('format')->value, 2, 'get value for format' );
 
 $good = {
     'title' => 'How to Test Perl Form Processors',
-    'author' => 'I.M. Author',
     'genres' => [2, 4],
     'format'       => 3,
     'isbn'   => '123-02345-0502-2' ,
@@ -66,7 +64,6 @@ ok( !$form->process( schema => $schema, params => $bad_1 ), 'bad parameters' );
 
 my $bad_2 = {
     'title' => "Another Silly Test Book",
-    'author' => "C. Foolish",
     'year' => '1590',
     'pages' => 'too few',
     'format' => '22',
@@ -77,8 +74,6 @@ ok( !$form->process( schema => $schema, params => $bad_2 ), 'bad 2');
 ok( $form->field('year')->has_errors, 'year has error' );
 
 ok( $form->field('pages')->has_errors, 'pages has error' );
-
-ok( !$form->field('author')->has_errors, 'author has no error' );
 
 ok( $form->field('format')->has_errors, 'format has error' );
 

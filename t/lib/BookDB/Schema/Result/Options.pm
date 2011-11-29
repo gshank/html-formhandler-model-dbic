@@ -38,10 +38,10 @@ __PACKAGE__->add_columns(
     size => 32,
   },
   "user_id",
-  { 
-    data_type => "INTEGER", 
-    is_nullable => 0, 
-    size => 8 
+  {
+    data_type => "INTEGER",
+    is_nullable => 0,
+    size => 8,
   },
 );
 __PACKAGE__->set_primary_key("options_id");

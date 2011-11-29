@@ -9,7 +9,6 @@ ok($schema, 'get db schema');
 
 my $bad = {
     'title' => "Another Silly Test Book",
-    'author' => "C. Foolish",
     'year' => '1590',
     'pages' => '101',
 };

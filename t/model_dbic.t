@@ -22,7 +22,7 @@ ok($schema, 'get schema');
                required => 1,
                accessor => 'title',
             },
-            author    => 'Text',
+            publisher => 'Text',
             extra     => 'Text',
          ]
       }
@@ -32,13 +32,13 @@ ok($schema, 'get schema');
 my $form = My::Form->new( item_id => 1, schema => $schema );
 ok( $form, 'get form');
 my $title_field = $form->field('book_title');
-my $author_field = $form->field('author');
+my $publisher_field = $form->field('publisher');
 
 ok( $title_field->value eq 'Harry Potter and the Order of the Phoenix', 'get title from form');
 
 ok( $title_field->order == 1, 'order for title');
 
-ok( $author_field->order == 2, 'order for author');
+ok( $publisher_field->order == 2, 'order for publisher');
 
 
 {
@@ -51,7 +51,7 @@ ok( $author_field->order == 2, 'order for author');
             title     => {
                type => 'Text',
             },
-            author    => 'Text',
+            publisher => 'Text',
             extra     => 'Text',
          ]
       }
@@ -80,12 +80,12 @@ ok( $form3->validated, 'form with single non-db param validates');
 
 my $params = {
    title => 'Testing a form created from an empty row',
-   author => 'S.Else',
+   publisher => 'S.Else',
    extra => 'extra_test'
 };
 
 $form3->process( params => $params );
-is( $book3->author, 'S.Else', 'row object updated');
+is( $book3->publisher, 'S.Else', 'row object updated');
 is( $form3->field('extra')->value, 'extra_test', 'value of non-db field');
 ok( $form3->item->id, 'get id from new result');
 ok( $form3->item_id, 'item_id has been set');

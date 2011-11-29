@@ -15,7 +15,6 @@ ok($schema, 'get db schema');
 my $book = $schema->resultset('Book')->create(
    {  title => 'Testing form',
       isbn => '02340994',
-      author => 'S.Else',
       publisher => 'NoWhere',
       pages => '702',
    });
@@ -28,14 +27,13 @@ ok( $form, 'create form from db object');
 
 is( $form->field('pages')->fif, 702, 'get field fif value' );
 
-is( $form->field('author')->fif, 'S.Else', 'get another field fif value' );
+is( $form->field('publisher')->fif, 'NoWhere', 'get another field fif value' );
 
 my $fif = $form->fif;
 
 is_deeply( $fif, {
       title => 'Testing form',
       isbn => '02340994',
-      author => 'S.Else',
       publisher => 'NoWhere',
       pages => '702',
       comment => '',
@@ -52,16 +50,15 @@ is( $form->field('pages')->fif, 702, 'get field fif value' );
 
 is( $form->get_param('pages'), '501', 'params contains new value' );
 
-is( $form->field('author')->fif, 'S.Else', 'get another field fif value' );
+is( $form->field('year')->fif, '', 'get another field fif value' );
 $form->processed(0);
 
 my $validated = $form->process;
 
 ok( $validated, 'validated without params' );
 
-is( $form->field('author')->fif, 'S.Else', 'get field fif value after validate' );
+is( $form->field('publisher')->fif, 'NoWhere', 'get field fif value after validate' );
 #ok( !$form->field('author')->has_input, 'no input for field');
-
 
 $form->clear;
 $fif = $form->fif;
@@ -71,7 +68,6 @@ my $params = {
    title => 'Testing form',
    isbn => '02340234',
    pages => '699',
-   author => 'J.Doe',
    publisher => '',
 };
 
@@ -83,7 +79,7 @@ ok( $validated, 'validated with params' );
 
 is( $form->field('pages')->fif, 699, 'get field fif after validation' );
 
-is( $form->field('author')->fif, 'J.Doe', 'get field author after validation' );
+is( $form->field('isbn')->fif, '02340234', 'get field author after validation' );
 
 $params->{$_} = '' for qw/ comment format year /;
 $params->{user_updated} = 0;

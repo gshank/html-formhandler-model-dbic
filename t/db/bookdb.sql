@@ -82,7 +82,6 @@ CREATE TABLE book (
     id INTEGER PRIMARY KEY,
     isbn varchar(100),
     title varchar(100),
-    author varchar(100),
     publisher varchar(100),
     pages int,
     year int,
@@ -97,15 +96,48 @@ CREATE TABLE book (
 CREATE INDEX book_idx_borrower ON book (borrower);
 CREATE INDEX book_idx_format ON book (format);
 CREATE INDEX book_idx_owner ON book (owner);
-CREATE UNIQUE INDEX author_title ON book (author, title);
 CREATE UNIQUE INDEX isbn ON book (isbn);
 
-INSERT INTO "book" VALUES(1, '0-7475-5100-6', 'Harry Potter and the Order of the Phoenix', 'J.K. Rowling', 'Boomsbury', 766, 2001, 1, 5, 1, '', 2, '');
-INSERT INTO "book" VALUES(2, '9 788256006199', 'Idioten', 'Fjodor Mikhajlovitsj Dostojevskij', 'Interbook', 303, 1901, 2, 3, 2, '2004-00-10', 2, '');
-INSERT INTO "book" VALUES(3, '434012386', 'The Confusion', 'Neal Stephenson', 'Heinemann', 345, 2002, 2, NULL, 2, '2009-01-16', 1, '');
-INSERT INTO "book" VALUES(4, '782128254', 'The Complete Java 2 Certification Study Guide: Programmer''s and Developers Exams (With CD-ROM)', 'Simon Roberts/Philip Heller/Michael Ernest', 'Sybex Inc', NULL, 1999, NULL, NULL, NULL, NULL, 3, '');
-INSERT INTO "book" VALUES(5, '123-1234-0-123', 'Winnie The Pooh', 'A.A.Milne', 'Houghton Mifflin', 345, 1935, 2, NULL, 4, '2008-11-14', 5, '');
-INSERT INTO "book" VALUES(6, '0-596-10092-2', 'Perl Testing: A Developer''s Notebook', 'Ian Langworth & chromatic', 'O''Reilly', 182, 2005, 3, NULL, 2, '2009-01-16', 3, '');
+INSERT INTO "book" VALUES(1, '0-7475-5100-6', 'Harry Potter and the Order of the Phoenix', 'Boomsbury', 766, 2001, 1, 5, 1, '', 2, '');
+INSERT INTO "book" VALUES(2, '9 788256006199', 'Idioten', 'Interbook', 303, 1901, 2, 3, 2, '2004-00-10', 2, '');
+INSERT INTO "book" VALUES(3, '434012386', 'The Confusion', 'Heinemann', 345, 2002, 2, NULL, 2, '2009-01-16', 1, '');
+INSERT INTO "book" VALUES(4, '782128254', 'The Complete Java 2 Certification Study Guide: Programmer''s and Developers Exams (With CD-ROM)', 'Sybex Inc', NULL, 1999, NULL, NULL, NULL, NULL, 3, '');
+INSERT INTO "book" VALUES(5, '123-1234-0-123', 'Winnie The Pooh', 'Houghton Mifflin', 345, 1935, 2, NULL, 4, '2008-11-14', 5, '');
+INSERT INTO "book" VALUES(6, '0-596-10092-2', 'Perl Testing: A Developer''s Notebook', 'O''Reilly', 182, 2005, 3, NULL, 2, '2009-01-16', 3, '');
+INSERT INTO "book" VALUES(7, '0-7475-8134-6', 'Harry Potter and the Last Gasp', 'Boomsbury', 801, 2005, 1, 5, 1, '', 2, '');
+
+CREATE TABLE author (
+   author_id INTEGER PRIMARY KEY,
+   first_name VARCHAR(100),
+   last_name VARCHAR(100),
+   country_iso char(2),
+   birthdate DATETIME
+);
+INSERT INTO "author" VALUES (1, "J.K.", "Rowling", "GB", "2003-01-16 00:00:00" );
+INSERT INTO "author" VALUES (2, "Fyodor", "Dostoyevsky", "RU", "1821-11-11 00:00:00" );
+INSERT INTO "author" VALUES (3, "Neil", "Stephenson", "US", "1959-10-31 00:00:00" );
+INSERT INTO "author" VALUES (4, "Simon", "Roberts", "UK", "1975-05-01 00:00:00" );
+INSERT INTO "author" VALUES (5, "Philip", "Heller", "US", "1976-01-01 00:00:00" );
+INSERT INTO "author" VALUES (6, "Michael", "Ernest", "UK", "1970-10-01 00:00:00" );
+INSERT INTO "author" VALUES (7, "A.A.", "Milne", "UK", "1904-08-09 00:00:00" );
+INSERT INTO "author" values (8, "", "chromatic", "UK", "1969-10-01 00:00:00" );
+INSERT INTO "author" values (9, "Ian", "Langworth", "UK", "1971-12-22 00:00:00" );
+
+
+CREATE TABLE author_books (
+    author_id INTEGER,
+    book_id INTEGER,
+    PRIMARY KEY (author_id, book_id)
+);
+
+INSERT INTO author_books VALUES (1, 1);
+INSERT INTO author_books VALUES (1, 7);
+INSERT INTO author_books VALUES (2, 2);
+INSERT INTO author_books VALUES (3, 3);
+INSERT INTO author_books VALUES (4, 4);
+INSERT INTO author_books VALUES (4, 5);
+INSERT INTO author_books VALUES (4, 6);
+INSERT INTO author_books VALUES (7, 5);
 
 CREATE TABLE borrower (
     id INTEGER PRIMARY KEY,
@@ -152,16 +184,19 @@ INSERT INTO "genre" VALUES(3, 'Mystery', NULL);
 INSERT INTO "genre" VALUES(4, 'Historical', NULL);
 INSERT INTO "genre" VALUES(5, 'Fantasy', NULL);
 INSERT INTO "genre" VALUES(6, 'Technical', NULL);
-CREATE TABLE author (
+CREATE TABLE author_old (
    first_name VARCHAR(100),
    last_name VARCHAR(100),
    country_iso char(2),
    birthdate DATETIME,
+   foo VARCHAR(24),
+   bar VARCHAR(24),
    CONSTRAINT name PRIMARY KEY (first_name, last_name)
 );
-INSERT INTO "author" VALUES ("J.K.", "Rowling", "GB", "2003-01-16 00:00:00" );
-INSERT INTO "author" VALUES ("Fyodor", "Dostoyevsky", "RU", "1821-11-11 00:00:00" );
-INSERT INTO "author" VALUES ("Neil", "Stephenson", "US", "1959-10-31 00:00:00" );
+CREATE UNIQUE INDEX unique_foo_bar ON author_old (foo, bar);
+INSERT INTO "author_old" VALUES ("J.K.", "Rowling", "GB", "2003-01-16 00:00:00", 'foo0', 'bar0' );
+INSERT INTO "author_old" VALUES ("Fyodor", "Dostoyevsky", "RU", "1821-11-11 00:00:00", 'foo1', 'bar1' );
+INSERT INTO "author_old" VALUES ("Neil", "Stephenson", "US", "1959-10-31 00:00:00", 'foo2', 'foo3' );
 
 -- iso_country_list.sql
 --

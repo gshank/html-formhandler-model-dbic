@@ -28,8 +28,6 @@ BookDB::Schema::Result::Book->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 100,
     extra => { field_def => { type => 'TextArea', size => '64', temp => 'testing' } },
   },
-  "author",
-  { data_type => "varchar", is_nullable => 0, size => 100 },
   "publisher",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "pages",
@@ -86,8 +84,13 @@ BookDB::Schema::Result::Book->has_many(
 BookDB::Schema::Result::Book->many_to_many(
   genres => 'books_genres', 'genre'
 );
-BookDB::Schema::Result::Book->add_unique_constraint(
-  author_title => [qw(author title) ]
+__PACKAGE__->has_many(
+  "book_authors",
+  "BookDB::Schema::Result::AuthorBooks",
+  { "foreign.book_id" => "self.id" },
+);
+__PACKAGE__->many_to_many(
+  authors => 'book_authors', 'author'
 );
 __PACKAGE__->add_unique_constraint( 'isbn' => ['isbn'] );
 
