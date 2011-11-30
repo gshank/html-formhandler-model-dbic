@@ -18,6 +18,9 @@ $form->process( item => $author, params => {});
 my @options = $form->field('books.0.genres')->options;
 is(scalar @options, 6, 'got right number of genre options' );
 
+my @formats = $form->field('books.0.format')->options;
+print STDERR "formats ", scalar(@formats), "\n";
+
 my $fif = $form->fif;
 
 done_testing;
