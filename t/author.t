@@ -19,7 +19,7 @@ my @options = $form->field('books.0.genres')->options;
 is(scalar @options, 6, 'got right number of genre options' );
 
 my @formats = $form->field('books.0.format')->options;
-print STDERR "formats ", scalar(@formats), "\n";
+is(scalar @formats, 6, 'got right number of format options');
 
 my $fif = $form->fif;
 
