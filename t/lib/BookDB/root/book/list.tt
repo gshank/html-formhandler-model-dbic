@@ -2,7 +2,7 @@
 <table id="books" cellspacing="0" summary="The list of all books">
 <caption>Table: List of Books</caption>
   <tr>
-    [% FOR column in columns %]
+    [% FOR column IN columns %]
     <th scope="col">[% column %]</th>
     [% END %]
     <th/>
