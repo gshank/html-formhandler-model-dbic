@@ -17,7 +17,7 @@ __PACKAGE__->add_columns(
   "birthdate",
   { data_type => "DATETIME", is_nullable => 0 },
   "foo" => {},
-  "bar" => {}, 
+  "bar" => {},
 );
 __PACKAGE__->set_primary_key("first_name", "last_name");
 

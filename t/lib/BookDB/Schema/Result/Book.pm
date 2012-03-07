@@ -97,7 +97,7 @@ __PACKAGE__->add_unique_constraint( 'isbn' => ['isbn'] );
 sub author_list {
     my $self = shift;
     my @authors = $self->authors->all;
-    my @author_names; 
+    my @author_names;
     foreach my $author (@authors) {
         push @author_names, $author->name;
     }

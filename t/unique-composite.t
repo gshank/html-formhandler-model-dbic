@@ -16,10 +16,10 @@ ok( !$form->process, 'Empty data' );
 
 # This is munging up the equivalent of param data from a form
 my $params = {
-    'first_name' => "Jane", 
-    'last_name' => "Doe", 
-    'foo'   => $duplicate->foo, 
-    'bar' => $duplicate->bar, 
+    'first_name' => "Jane",
+    'last_name' => "Doe",
+    'foo'   => $duplicate->foo,
+    'bar' => $duplicate->bar,
 };
 
 ok( !$form->process( $params ), 'duplicate foo/bar fails validation' );
