@@ -1,3 +1,6 @@
+0.17 Wed Mar 7, 2012
+    Remove unnecessary broken DateTime tests
+    Added functionality to optionally generate class_prefix, label and label_column
 0.16 Sat Oct 4, 2011
     Update test to match changes in HTML::FormHandler
     Fix form_generator package
