@@ -14,10 +14,7 @@ has_field 'occupation';
 has_field 'country' => ( type => 'Select' );
 has_field 'license' => ( type => 'Select' );
 has_field 'opt_in' => ( type => 'Checkbox' );
-has_field 'birthdate' => (
-    type => 'Compound',
-    apply => [ { transform => sub{ DateTime->new( $_[0] ) } } ],
-);
+has_field 'birthdate' => ( type => 'DateTime' );
 has_field 'birthdate.year' => ( type => 'Text', );
 has_field 'birthdate.month' => ( type => 'Text', );
 has_field 'birthdate.day' => ( type => 'Text', );

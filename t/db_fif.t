@@ -5,8 +5,6 @@ use Test::More;
 use lib 't/lib';
 
 use BookDB::Form::User;
-use BookDB::Form::User2;
-use BookDB::Form::User3;
 use BookDB::Schema;
 use BookDB::Form::BookWithOwner;
 
@@ -63,15 +61,5 @@ my $db_fif = {
 is_deeply( $form->fif, $db_fif, 'get right fif from db' );
 is( $form->field('opt_in')->fif,  0, 'right value for field with 0' );
 is( $form->field('license')->fif, 3, 'right value for license field' );
-
-#print Dumper( $form->fif ); use Data::Dumper;
-
-$form = BookDB::Form::User2->new( item => $user );
-is( $form->field('birthdate')->field('year')->fif,  1000, 'Year deflated' );
-is( $form->field('birthdate')->field('month')->fif, 1,    'Month deflated' );
-is( $form->field('birthdate')->field('day')->fif,   5,    'Day deflated' );
-
-$form = BookDB::Form::User3->new( item => $user );
-is( $form->field('birthdate')->fif, '1970-04-23', 'DateTime deflated to text' );
 
 done_testing;
