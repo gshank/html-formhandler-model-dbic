@@ -7,3 +7,5 @@ META.yml
 Makefile
 Makefile.old
 MANIFEST.bak
+.build
+HTML-FormHandler-Model-DBIC*
