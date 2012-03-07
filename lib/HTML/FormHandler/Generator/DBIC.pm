@@ -4,7 +4,7 @@ package HTML::FormHandler::Generator::DBIC;
 use Moose;
 use DBIx::Class;
 use Template;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -18,6 +18,9 @@ Options:
   rs_name       -- Resultset Name
   schema_name   -- Schema Name
   db_dsn        -- dsn connect info
+  class_prefix  -- [OPTIONAL] Prefix for generated classes (Default: '')
+  label         -- [OPTIONAL] Flag to toggle generation of form labels (Default: 0)
+  label_column  -- [OPTIONAL] Flag to toggle generation of dummy form labels_columns for type: 'select' (Default: 0)
 
 
 This package should be considered still experimental since the output,
@@ -76,6 +79,18 @@ has 'tt' => (
     default => sub { Template->new() },
 );
 
+has 'label' => (
+    is  => 'ro',
+    isa => 'Bool',
+    default => 0,
+);
+
+has 'label_column' => (
+    is  => 'ro',
+    isa => 'Bool',
+    default => 0,
+);
+
 has 'class_prefix' => (
     is => 'ro',
     isa => 'Str',
@@ -120,11 +135,15 @@ has 'field_classes' => (
 );
 
 my $form_template = <<'END';
+# Generated automatically with HTML::FormHandler::Generator::DBIC
+# Using following commandline:
+# form_generator.pl --rs_name=[% rs_name %][% IF label==1 %] --label[% END %][% IF label_column==1 %] --label_column[% END %] --schema_name=[% schema_name %][% IF class_prefix != '' %] --class_prefix=[% class_prefix %][% END %] --db_dsn=[% db_dsn %]
 {
     package [% config.class %]Form;
     use HTML::FormHandler::Moose;
     extends 'HTML::FormHandler::Model::DBIC';
     with 'HTML::FormHandler::Render::Simple';
+    use namespace::autoclean;
 [% FOR package = self.used_packages %]
     use [% package %];
 [% END %]
@@ -134,7 +153,10 @@ my $form_template = <<'END';
     [% FOR field = config.fields -%]
 [% field %]
     [% END -%]
-has_field 'submit' => ( widget => 'Submit' )
+has_field 'submit' => ( widget => 'Submit', [% IF label==1 %]label =>'Submit'[% END %]);
+
+    __PACKAGE__->meta->make_immutable;
+    no HTML::FormHandler::Moose;
 }
 [% FOR field_class = self.list_field_classes %]
 [% SET cf = self.get_field_class_data( field_class ) %]
@@ -142,10 +164,13 @@ has_field 'submit' => ( widget => 'Submit' )
     package [% cf.class %]Field;
     use HTML::FormHandler::Moose;
     extends 'HTML::FormHandler::Field::Compound';
+    use namespace::autoclean;
 
     [% FOR field = cf.fields -%]
-    [% field %]
+[% field %]
     [% END %]
+    __PACKAGE__->meta->make_immutable;
+    no HTML::FormHandler::Moose;
 }
 [% END %]
 
@@ -160,6 +185,11 @@ sub generate_form {
         self => $self,
         config => $config,
         rs_name => $self->rs_name,
+        label => $self->label,
+        label_column => $self->label_column,
+        schema_name => $self->schema_name,
+        class_prefix => $self->class_prefix,
+        db_dsn => $self->db_dsn,
     };
     $tmpl_params->{single} = 1 if defined $self->style && $self->style eq 'single';
     $self->tt->process( \$form_template, $tmpl_params, \$output )
@@ -230,6 +260,7 @@ END
     $output .= "type => '$type', ";
     $output .= "size => $info->{size}, " if $type eq 'Text' && $info->{size};
     $output .= 'required => 1, ' if not $info->{is_nullable};
+    $output .= "label => '".$name."', " if $self->label;
     return $output . ');';
 }
 
@@ -247,7 +278,11 @@ sub get_elements {
         my $rel_class = _strip_class( $info->{class} );
         my $elem_conf;
         if ( ! ( $info->{attrs}{accessor} eq 'multi' ) ) {
-            push @fields, "has_field '$rel' => ( type => 'Select', );"
+            my $field = "has_field '$rel' => ( type => 'Select', ";
+            $field .= "label => '".$rel."', " if $self->label;
+            $field .= "label_column => 'TO_BE_DONE', " if $self->label_column;
+            $field .= ");";
+            push @fields, $field;
         }
         elsif( $level < 1 ) {
             my @new_exclude = get_foreign_cols ( $info->{cond} );
