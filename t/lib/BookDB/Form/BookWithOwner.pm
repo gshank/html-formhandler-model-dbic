@@ -3,9 +3,6 @@
 
     use HTML::FormHandler::Moose;
     extends 'HTML::FormHandler::Field::Compound';
-#    with 'HTML::FormHandler::Model::DBIC';
-
-#    has '+item_class' => ( default => 'User' );
 
     has_field 'user_name';
     has_field 'fav_cat' => ( label => 'Favorite Book Category' );

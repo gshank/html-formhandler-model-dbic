@@ -2,7 +2,6 @@ package BookDB::Form::Book;
 
 use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
-with 'HTML::FormHandler::Render::Simple';
 
 =head1 NAME
 

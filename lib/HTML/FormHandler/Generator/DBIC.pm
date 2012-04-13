@@ -142,7 +142,6 @@ my $form_template = <<'END';
     package [% config.class %]Form;
     use HTML::FormHandler::Moose;
     extends 'HTML::FormHandler::Model::DBIC';
-    with 'HTML::FormHandler::Render::Simple';
     use namespace::autoclean;
 [% FOR package = self.used_packages %]
     use [% package %];

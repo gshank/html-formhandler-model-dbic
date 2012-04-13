@@ -11,15 +11,13 @@ my $field = HTML::FormHandler::Field::DateTime->new( name => 'test_field' );
 ok( defined $field, 'new() called' );
 
 {
+    package UserForm;
 
-package UserForm;
+    use HTML::FormHandler::Moose;
+    extends 'HTML::FormHandler::Model::DBIC';
 
-use HTML::FormHandler::Moose;
-extends 'HTML::FormHandler::Model::DBIC';
-with 'HTML::FormHandler::Render::Simple';
-
-has_field 'birthdate'      => ( type => 'DateTime' );
-has_field 'birthdate.year' => ( type => 'Year' );
+    has_field 'birthdate'      => ( type => 'DateTime' );
+    has_field 'birthdate.year' => ( type => 'Year' );
 }
 
 my $schema = BookDB::Schema->connect('dbi:SQLite:t/db/book.db');
