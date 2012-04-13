@@ -32,7 +32,7 @@ is( $title_field->temp, 'testing', 'got field def from extra' );
 
 $form = HTML::FormHandler::Model::DBIC->new_with_traits(
     traits => ['HTML::FormHandler::TraitFor::DBICFields'],
-    include => ['title', 'publisher' ],
+    includes => ['title', 'publisher' ],
     field_list => [ 'submit' => { type => 'Submit', value => 'Save', order => 99 } ],
     item => $book );
 ok( $form, 'get form' );
