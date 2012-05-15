@@ -1,3 +1,6 @@
+0.21 Mon May 14, 2012
+    Bump prereq version for HTML::FormHandler
+
 0.20 Mon May 14, 2012
     Update t/related.t test for compatibility with FH changes
 
