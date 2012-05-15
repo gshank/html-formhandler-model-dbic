@@ -75,7 +75,11 @@ my $params = {
    'birthdate.day' => 21,
    'employers.0.name' => "Acme Software",
    'employers.0.category' => "Computers",
-   'employers.0.country' => "United Kingdom"
+   'employers.0.country' => "United Kingdom",
+   'addresses.0.address_id' => '',
+   'addresses.0.city' => '',
+   'addresses.0.country' => '',
+   'addresses.0.street' => '',
 };
 $form->process( item_id => undef, params => $params);
 my $new_user = $form->item;

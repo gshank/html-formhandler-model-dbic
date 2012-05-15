@@ -1,4 +1,7 @@
-0.19 Thu Arp 12, 2012
+0.20 Mon May 14, 2012
+    Update t/related.t test for compatibility with FH changes
+
+0.19 Thu Apr 12, 2012
     Name conflict between DBICFields and HFH.
         Rename 'include' & 'exclude' in DBICFields.
 0.18 Thu Mar 8, 2012
