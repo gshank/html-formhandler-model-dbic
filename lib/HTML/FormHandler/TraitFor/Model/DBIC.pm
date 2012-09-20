@@ -466,6 +466,7 @@ sub validate_unique
    for my $field ( @$fields )
    {
       next unless $field->unique;
+      next if ( $field->is_inactive || !$field->has_result );
       next if $field->has_errors;
       my $value = $field->value;
       next unless defined $value;
