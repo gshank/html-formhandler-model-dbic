@@ -380,7 +380,7 @@ sub lookup_options
    # if no sort_column and label_column is a source method, not a real column, must
    # use some other column for sort. There's probably some other column that should
    # be specified, but this will prevent breakage
-   if ( !(defined $sort_col && $source->has_column($sort_col)) ) {
+   if ( ! defined $sort_col ) {
        $sort_col = $source->has_column($label_column) ? $label_column : $primary_key;
    }
 
