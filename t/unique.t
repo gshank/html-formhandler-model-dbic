@@ -59,4 +59,10 @@ ok( ! $form2->process( $params ), 'duplicate isbn again' );
 
 is( $errors[0], 'Duplicate ISBN number', 'field error message for duplicate');
 
+# Tests for fields that are inactive
+my $item = $schema->resultset('Book')->new({});
+ok ( $form->process( item => $item, params => $params, inactive => ['isbn'] ),
+    'no uniqueness check on inactive fields' );
+$item->delete if $item->in_storage; # Cleanup insert
+
 done_testing;
