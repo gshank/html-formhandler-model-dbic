@@ -27,11 +27,11 @@ or apply as a role to FormHandler class:
 
 =head1 DESCRIPTION
 
-This is a separate L<DBIx::Class> model role for L<HTML::FormHandler>. It will save
-form fields automatically to the database. The distribution
-contains an example application (execute with t/script/bookdb_server.pl) and a form
-generator (L<HTML::FormHandler::Generator::DBIC>).
+This is a separate L<DBIx::Class> model role for L<HTML::FormHandler>.
 It will handle normal DBIC column accessors and a number of DBIC relationships.
+It will save form fields automatically to the database. The distribution contains a form
+generator (L<HTML::FormHandler::Generator::DBIC>). An example application can
+be found on github at http://github.com/gshank/formhandler-example.
 
 L<HTML::FormHandler::TraitFor::DBICFields> can be used to auto-generate forms
 from a DBIC result.
