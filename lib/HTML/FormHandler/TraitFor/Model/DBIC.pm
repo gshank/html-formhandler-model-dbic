@@ -178,13 +178,13 @@ For fields that are marked "unique", checks the database for uniqueness.
 The unique constraints registered in the DBIC result source (see
 L<DBIx::Class::ResultSource/add_unique_constraint>) will also be inspected
 for uniqueness unless the field's 'unique' attribute is set to false.
-Alternatively, you can use the C<unique_constraints>
-attribute to limit uniqueness checking to only a select group of unique
+Alternatively, you can override C<_build_unique_constraints>
+to limit uniqueness checking to only a select group of unique
 constraints.  Error messages can be specified in the C<unique_messages>
 attribute.  Here's an example where you might want to specify a unique
 widget name for a given department:
 
-   has '+unique_constraints' => ( default => sub { ['department_widget_name'] } );
+   override '_build_unique_constraints' => sub { return ['department_widget_name']; };
    has '+unique_messages' => (
       default => sub {
          { department_widget_name => "Please choose a unique widget name for this department" };
