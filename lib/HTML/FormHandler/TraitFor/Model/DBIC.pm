@@ -428,7 +428,6 @@ sub _fix_value
 {
    my ( $self, $field, $value ) = @_;
    if( blessed $value && $value->isa('DBIx::Class') ){
-$DB::single=1;
        return $value->id;
    }
    return $value;
