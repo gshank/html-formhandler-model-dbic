@@ -37,4 +37,8 @@ $form = BookDB::Form::AuthorOld->new(item_id => $pk_hashlist, schema => $schema)
 ok( $form, 'get form with array of hashref primary key' );
 is( $form->item->country_iso, 'GB', 'got right row');
 
+$form = BookDB::Form::AuthorOld->new( item => $author );
+ok( $form, 'got form with only item passed in' );
+is_deeply( $form->item_id, $pk_hashlist, 'got primary key' );
+
 done_testing;
