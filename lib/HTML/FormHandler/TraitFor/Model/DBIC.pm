@@ -196,6 +196,17 @@ widget name for a given department:
 
 Returns a DBIx::Class::ResultSource object for this Result Class.
 
+=head2 item_values
+
+    $self->item_values->{id};
+
+The current values, in the form of a hashref, that the L</item>
+has.  Used to abstract details of how to access the raw values of
+a given model.
+
+For this model we are just calling ->get_columns on the item object
+which we expect is a DBIC row.
+
 =head2 resultset
 
 This method returns a resultset from the "item_class" specified
@@ -272,6 +283,8 @@ sub clear_model {
     $self->item(undef);
     $self->item_id(undef);
 }
+
+sub item_values { +{shift->item->get_columns} }
 
 sub update_model {
     my $self   = shift;
