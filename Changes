@@ -1,3 +1,6 @@
+0.24 Sun May 5, 2013
+    Bump prereq version of DBIC to avoid a regression
+
 0.23 Mon Oct 15, 2012
     Bump pre-req to non-broken HTML::FormHandler
 
