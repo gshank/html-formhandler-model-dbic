@@ -31,6 +31,7 @@ has_field 'title' => (
 has_field 'authors' => (
     type  => 'Multiple',
     label => 'Authors',
+    label_column => 'full_name',
     order => '2',
 );
 
@@ -76,6 +77,11 @@ has_field 'pages' => (
 has_field 'comment' => (
     type  => 'Text',
     order => 9,
+);
+
+has_field 'borrower' => (
+    type => 'Select',
+    label_column => 'name_email',
 );
 
 has_field submit => ( type => 'Submit', value => 'Update' );

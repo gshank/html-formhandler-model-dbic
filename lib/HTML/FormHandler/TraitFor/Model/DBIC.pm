@@ -370,10 +370,13 @@ sub lookup_options {
     }
     return unless $source;
 
+if( $accessor eq 'authors' ) {
+  $DB::single=1;
+}
     my $label_column = $field->label_column;
     return
         unless ( $source->has_column($label_column) ||
-        $source->can($label_column) );
+        $source->result_class->can($label_column) );
 
     my $active_col = $self->active_column || $field->active_column;
     $active_col = '' unless $source->has_column($active_col);

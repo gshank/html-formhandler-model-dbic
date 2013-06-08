@@ -28,5 +28,10 @@ __PACKAGE__->has_many(
   { "foreign.borrower" => "self.id" },
 );
 
+sub name_email {
+    my $self = shift;
+    return $self->name . " <" . $self->email . ">";
+}
+
 
 1;

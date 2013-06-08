@@ -40,7 +40,7 @@ __PACKAGE__->many_to_many(
    'books' => 'author_books', 'book'
 );
 
-sub name {
+sub full_name {
     my $self = shift;
     return $self->first_name . " " . $self->last_name;
 }

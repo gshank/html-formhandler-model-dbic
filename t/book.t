@@ -17,6 +17,13 @@ my $form = BookDB::Form::Book->new;
 
 ok( !$form->process( item => $item ), 'Empty data' );
 
+# check authors options
+my $author_options = $form->field('authors')->options;
+is( $author_options->[0]->{label}, 'J.K. Rowling', 'right author name');
+
+my $borrower_options = $form->field('borrower')->options;
+is( $borrower_options->[1]->{label}, 'John Doe <john@gmail.com>', 'right borrower name');
+
 # This is munging up the equivalent of param data from a form
 my $good = {
     'title' => 'How to Test Perl Form Processors',
@@ -27,6 +34,7 @@ my $good = {
     'publisher' => 'EreWhon Publishing',
     'user_updated' => 1,
     'comment' => 'this is a comment',
+    'borrower' => undef,
 };
 
 ok( $form->process( item => $item, params => $good ), 'Good data' );
@@ -38,7 +46,7 @@ ok ($book, 'get book object from form');
 
 is( $book->extra, 'this is a comment', 'comment exists' );
 is_deeply( $form->values, $good, 'values correct' );
-$good->{$_} = '' for qw/ year pages/;
+$good->{$_} = '' for qw/ year pages borrower/;
 is_deeply( $form->fif, $good, 'fif correct' );
 
 my $num_genres = $book->genres->count;
@@ -62,7 +70,8 @@ is( $form->field('publisher')->value, 'EreWhon Publishing', 'right publisher');
 my $value_hash = { %{$good},
                    authors => [],
                    year => undef,
-                   pages => undef
+                   pages => undef,
+                   borrower => undef,
                  };
 delete $value_hash->{submit};
 is_deeply( $form->values, $value_hash, 'get right values from form');

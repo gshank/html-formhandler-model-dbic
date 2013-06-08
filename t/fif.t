@@ -40,6 +40,7 @@ is_deeply( $fif, {
       format => '',
       year => '',
       user_updated => 0,
+      borrower => '',
    }, 'get form fif' );
 
 $fif->{pages} = '501';
@@ -81,7 +82,7 @@ is( $form->field('pages')->fif, 699, 'get field fif after validation' );
 
 is( $form->field('isbn')->fif, '02340234', 'get field author after validation' );
 
-$params->{$_} = '' for qw/ comment format year /;
+$params->{$_} = '' for qw/ comment format year borrower /;
 $params->{user_updated} = 0;
 is_deeply( $form->fif, $params, 'get form fif after validation' );
 
