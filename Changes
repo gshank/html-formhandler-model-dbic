@@ -1,3 +1,7 @@
+0.25 Wed Jul 3, 2013
+    Fix bug using result source method for select labels
+    Bump prereq of DBIx::Class::ResultSet::RecursiveUpdate
+
 0.24 Sun May 5, 2013
     Bump prereq version of DBIC to avoid a regression
 
