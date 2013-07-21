@@ -9,7 +9,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
 use Scalar::Util ('blessed');
 
-our $VERSION = '0.14';
+our $VERSION = '0.26';
 
 =head1 SYNOPSIS
 
@@ -473,7 +473,7 @@ sub validate_unique {
 
         my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
         next if $count < 1;
-        my $field_error = $field->unique_message || 'Duplicate value for [_1]';
+        my $field_error = $field->get_message('unique') || $field->unique_message || 'Duplicate value for [_1]';
         $field->add_error( $field_error, $field->loc_label );
         $found_error++;
     }

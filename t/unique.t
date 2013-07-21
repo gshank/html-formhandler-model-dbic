@@ -45,7 +45,7 @@ is( $error, 'Duplicate value for ISBN', 'error message for duplicate');
             isbn => {
                type => 'Text',
                unique => 1,
-               unique_message => 'Duplicate ISBN number',
+               messages => { unique => 'Duplicate ISBN number' },
             }
         ]
    }

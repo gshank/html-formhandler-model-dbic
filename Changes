@@ -1,3 +1,6 @@
+0.26 Sun Jul 21, 2013
+    Enable use of 'messages' hashref for setting unique message
+
 0.25 Wed Jul 3, 2013
     Fix bug using result source method for select labels
     Bump prereq of DBIx::Class::ResultSet::RecursiveUpdate
