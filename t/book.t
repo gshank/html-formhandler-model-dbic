@@ -120,7 +120,7 @@ $form->process( $good );
 is( $book->genres->count, 0, 'multiple select list has no selected options');
 
 $form = BookDB::Form::Book->new(schema => $schema, active_column => 'is_active');
-is( scalar @{$form->field( 'genres' )->options}, 0, 'active_column test' );
+is( $form->field( 'genres' )->num_options, 3, 'active_column test' );
 
 {
     package Test::Book;

@@ -178,12 +178,12 @@ CREATE TABLE genre (
     name varchar(100),
     is_active INTEGER
 );
-INSERT INTO "genre" VALUES(1, 'Sci-Fi', NULL);
-INSERT INTO "genre" VALUES(2, 'Computers', NULL);
+INSERT INTO "genre" VALUES(1, 'Sci-Fi', 1);
+INSERT INTO "genre" VALUES(2, 'Computers', 1);
 INSERT INTO "genre" VALUES(3, 'Mystery', NULL);
 INSERT INTO "genre" VALUES(4, 'Historical', NULL);
 INSERT INTO "genre" VALUES(5, 'Fantasy', NULL);
-INSERT INTO "genre" VALUES(6, 'Technical', NULL);
+INSERT INTO "genre" VALUES(6, 'Technical', 1);
 CREATE TABLE author_old (
    first_name VARCHAR(100),
    last_name VARCHAR(100),
