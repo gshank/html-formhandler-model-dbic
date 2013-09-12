@@ -1,3 +1,6 @@
+0.27
+    Bug: dies with multiple pk table with unique field/column
+
 0.26 Sun Jul 21, 2013
     Enable use of 'messages' hashref for setting unique message
 

@@ -525,19 +525,22 @@ sub unique_message_for_constraint {
 
 sub _id_clause {
     my ( $resultset, $id ) = @_;
+
     my @pks = $resultset->result_source->primary_columns;
-    my @ids;
-    if ( ref $id eq 'ARRAY' ) {
-        @ids = @$id;
+    my %clause;
+    # multiple primary key
+    if ( scalar @pks > 1 ) {
+        die "multiple primary key invalid" if ref $id ne 'ARRAY';
+        my $cond = $id->[0];
+        my @phrase;
+        foreach my $col ( keys %$cond ) {
+            $clause{$col} = { '!=' => $cond->{$col} };
+        }
     }
     else {
-        @ids = ($id);
+        %clause = ( $pks[0] => { '!=' => $id } );
     }
-    my %result;
-    for my $i ($#ids) {
-        $result{ $pks[$i] } = { '!=' => $ids[$i] };
-    }
-    return %result;
+    return %clause;
 }
 
 sub build_item {
