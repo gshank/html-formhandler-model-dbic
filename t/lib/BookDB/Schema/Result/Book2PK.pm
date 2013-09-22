@@ -2,7 +2,6 @@ package BookDB::Schema::Result::Book2PK;
 
 use Moose;
 use MIME::Base64;
-use Business::ISBN 'valid_isbn_checksum';
 
 use base 'DBIx::Class';
 
