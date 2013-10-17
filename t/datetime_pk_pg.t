@@ -273,7 +273,7 @@ warning_is {
         "presentations.0.date" => "2013-10-16", ## date in the far future
         "presentations.0.title" => "The incredible Book C!",
     });
-} undef, "An infinity date can be stored as a PK without warnings";
+} undef, "A date can be stored as a PK in related table without warnings";
 
 ok( $form2->validated, "form is valid" );
 
