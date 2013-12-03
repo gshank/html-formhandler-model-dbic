@@ -168,10 +168,8 @@ The currently selected values in a Multiple list are grouped at the top
 
 =head2 init_value
 
-This method sets a field's value (for $field->value).
-
-This method is not called if a method "init_value_$field_name" is found
-in the form class - that method is called instead.
+This method sets a field's initial value. it is set when values are
+initially loaded from an item, init_object or field defaults.
 
 =head2 validate_unique
 
