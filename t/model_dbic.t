@@ -85,6 +85,7 @@ my $params = {
 };
 
 $form3->process( params => $params );
+$book3 = $form3->item;
 is( $book3->publisher, 'S.Else', 'row object updated');
 is( $form3->field('extra')->value, 'extra_test', 'value of non-db field');
 ok( $form3->item->id, 'get id from new result');

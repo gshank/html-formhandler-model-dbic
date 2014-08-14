@@ -25,6 +25,7 @@ my $validated = $form->process( $bad );
 ok( $validated, 'now form validates' );
 
 $form->update_model;
+$book = $form->item;
 is( $book->year, 1999, 'book has been updated with correct data' );
 
 done_testing;
