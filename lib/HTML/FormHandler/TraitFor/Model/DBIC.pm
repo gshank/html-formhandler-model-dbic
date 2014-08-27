@@ -7,7 +7,7 @@ use Moose::Role;
 use Carp;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
-use Scalar::Util ('blessed');
+use Scalar::Util ('blessed', 'looks_like_number');
 
 our $VERSION = '0.26';
 
@@ -161,6 +161,9 @@ The active column name is determined by calling:
 This allows setting the name of the active column globally if
 your tables are consistantly named (all lookup tables have the same
 column name to indicate they are active), or on a per-field basis.
+
+The active column can be a row method rather an actual result source column,
+but that requires checking each row individually *after* fetching all rows.
 
 The column to use for sorting the list is specified with "sort_column".
 The currently selected values in a Multiple list are grouped at the top
@@ -373,8 +376,10 @@ sub lookup_options {
         unless ( $source->has_column($label_column) ||
         $source->result_class->can($label_column) );
 
-    my $active_col = $self->active_column || $field->active_column;
-    $active_col = '' unless $source->has_column($active_col);
+    my $active_check = $self->active_column || $field->active_column;
+    my $active_check_method = $source->result_class->can($active_check) && ! $source->has_column($active_check);
+    $active_check = '' unless $source->result_class->can($active_check) || $source->has_column($active_check);
+
     my $sort_col = $field->sort_column;
     my ($primary_key) = $source->primary_columns;
 
@@ -385,10 +390,10 @@ sub lookup_options {
         $sort_col = $source->has_column($label_column) ? $label_column : $primary_key;
     }
 
-    # If there's an active column, only select active OR items already selected
+    # If there's an active check, and it's a column, only select active OR items already selected
     my $criteria = {};
-    if ($active_col) {
-        my @or = ( $active_col => 1 );
+    if ($active_check && ! $active_check_method ) {
+        my @or = ( $active_check => 1 );
 
         # But also include any existing non-active
         push @or, ( "$primary_key" => $field->init_value )
@@ -401,10 +406,26 @@ sub lookup_options {
         $self->schema->resultset( $source->source_name )
         ->search( $criteria, { order_by => $sort_col } )->all;
     my @options;
+
     foreach my $row (@rows) {
+    
+        # The active check is not a real column, so we must weed rows using the row's method 
+        if( $active_check && $active_check_method ) {
+            my $is_pk;
+
+            if( $self->item && defined $field->init_value ) {
+                $is_pk = looks_like_number($row->$primary_key) ?
+                         $row->$primary_key == $field->init_value :
+                         $row->$primary_key eq $field->init_value;
+            }
+
+            
+            # skip if not PK nor active
+            next if ! $row->$active_check && ! $is_pk;
+        }
         my $label = $row->$label_column;
         next unless defined $label;    # this means there's an invalid value
-        push @options, $row->id, $active_col && !$row->$active_col ? "[ $label ]" : "$label";
+        push @options, $row->id, $active_check && !$row->$active_check ? "[ $label ]" : "$label";
     }
     return \@options;
 }
