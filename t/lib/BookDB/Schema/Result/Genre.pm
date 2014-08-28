@@ -25,5 +25,8 @@ BookDB::Schema::Result::Genre->many_to_many(
   books => 'books_genres', 'book'
 );
 
+sub check_active {
+    $_[0]->is_active;
+}
 
 1;
