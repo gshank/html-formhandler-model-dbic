@@ -4,7 +4,6 @@ package HTML::FormHandler::Generator::DBIC;
 use Moose;
 use DBIx::Class;
 use Template;
-our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 

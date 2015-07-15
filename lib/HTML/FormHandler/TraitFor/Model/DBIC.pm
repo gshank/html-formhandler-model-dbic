@@ -9,8 +9,6 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
 use Scalar::Util ('blessed');
 
-our $VERSION = '0.26';
-
 =head1 SYNOPSIS
 
 Subclass your form from HTML::FormHandler::Model::DBIC:
