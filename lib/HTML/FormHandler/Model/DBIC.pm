@@ -5,8 +5,6 @@ use Moose;
 extends 'HTML::FormHandler';
 with 'HTML::FormHandler::TraitFor::Model::DBIC';
 
-our $VERSION = '0.29';
-
 =head1 SUMMARY
 
 Empty base class - see L<HTML::FormHandler::TraitFor::Model::DBIC> for
