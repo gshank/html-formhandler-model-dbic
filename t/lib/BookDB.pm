@@ -5,7 +5,7 @@ use Catalyst ('-Debug',
               'Static::Simple',
 );
 
-our $VERSION = '0.02';
+#our $VERSION = '0.02';
 
 BookDB->config( name => 'BookDB' );
 
