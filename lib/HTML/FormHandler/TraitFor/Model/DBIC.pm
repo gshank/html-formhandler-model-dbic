@@ -7,6 +7,7 @@ use Moose::Role;
 use Carp;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
+use List::Util 'pairmap';
 use Scalar::Util ('blessed');
 
 our $VERSION = '0.26';
@@ -257,6 +258,20 @@ has 'ru_flags' => (
 
 sub _build_ru_flags {
     { unknown_params_ok => 1 };
+}
+
+has _accessor_aliases => (
+    is         => 'ro',
+    isa        => 'HashRef',
+    lazy_build => 1,
+);
+
+sub _build__accessor_aliases {
+    my $self = shift;
+    return {
+        pairmap { $b->{accessor} || $a => $a, $a => $a }
+        %{ $self->resultset->result_source->columns_info }
+    };
 }
 
 sub validate_model {
