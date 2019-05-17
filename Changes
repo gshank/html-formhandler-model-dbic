@@ -1,3 +1,5 @@
+  Bug: unable to make fields unique when the accessor differs from column name.
+
 0.29
    Fix tests broken because item is now cleared
 
@@ -78,4 +80,3 @@
     Fix dependency errors
 0.04 Sun July 26, 2009
     Split from HTML::FormHandler distribution
-
