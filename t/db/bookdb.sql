@@ -1,7 +1,7 @@
 BEGIN TRANSACTION;
 CREATE TABLE user (
    user_id INTEGER PRIMARY KEY,
-   un VARCHAR(32),
+   user_name VARCHAR(32),
    fav_cat VARCHAR(32),
    fav_book VARCHAR(32),
    occupation VARCHAR(32),
