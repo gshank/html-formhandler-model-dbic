@@ -483,8 +483,9 @@ sub validate_unique {
         my $value = $field->value;
         next unless defined $value;
         my $accessor = $field->accessor;
+        my $column   = $self->_accessor_aliases->{$accessor} || $accessor;
 
-        my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
+        my $count = $rs->search( { $column => $value, @id_clause } )->count;
         next if $count < 1;
         my $field_error = $field->get_message('unique') || $field->unique_message || 'Duplicate value for [_1]';
         $field->add_error( $field_error, $field->loc_label );
