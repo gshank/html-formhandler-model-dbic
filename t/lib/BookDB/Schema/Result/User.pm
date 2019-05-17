@@ -10,8 +10,8 @@ __PACKAGE__->table("user");
 __PACKAGE__->add_columns(
   "user_id",
   { data_type => "INTEGER", is_nullable => 0, size => 8 },
-  "user_name",
-  { data_type => "VARCHAR", is_nullable => 0, size => 32 },
+  "un",
+  { accessor => "user_name", data_type => "VARCHAR", is_nullable => 0, size => 32 },
   "fav_cat",
   { data_type => "VARCHAR", is_nullable => 0, size => 32 },
   "fav_book",
