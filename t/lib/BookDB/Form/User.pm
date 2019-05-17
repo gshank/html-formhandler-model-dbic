@@ -6,7 +6,7 @@ use DateTime;
 
 has '+item_class' => ( default => 'User');
 
-has_field 'user_name';
+has_field 'user_name' => ( unique => 1 );
 has_field 'fav_cat' => ( label => 'Category' );
 has_field 'fav_book' => ( label => 'Favorite Book' );
 has_field 'occupation';

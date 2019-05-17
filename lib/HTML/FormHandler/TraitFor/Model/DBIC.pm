@@ -7,6 +7,7 @@ use Moose::Role;
 use Carp;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBIx::Class::ResultSet::RecursiveUpdate;
+use List::Util 'pairmap';
 use Scalar::Util ('blessed');
 
 our $VERSION = '0.26';
@@ -259,6 +260,20 @@ sub _build_ru_flags {
     { unknown_params_ok => 1 };
 }
 
+has _accessor_aliases => (
+    is         => 'ro',
+    isa        => 'HashRef',
+    lazy_build => 1,
+);
+
+sub _build__accessor_aliases {
+    my $self = shift;
+    return {
+        pairmap { $b->{accessor} || $a => $a, $a => $a }
+        %{ $self->resultset->result_source->columns_info }
+    };
+}
+
 sub validate_model {
     my ($self) = @_;
     return unless $self->validate_unique;
@@ -468,8 +483,9 @@ sub validate_unique {
         my $value = $field->value;
         next unless defined $value;
         my $accessor = $field->accessor;
+        my $column   = $self->_accessor_aliases->{$accessor} || $accessor;
 
-        my $count = $rs->search( { $accessor => $value, @id_clause } )->count;
+        my $count = $rs->search( { $column => $value, @id_clause } )->count;
         next if $count < 1;
         my $field_error = $field->get_message('unique') || $field->unique_message || 'Duplicate value for [_1]';
         $field->add_error( $field_error, $field->loc_label );
